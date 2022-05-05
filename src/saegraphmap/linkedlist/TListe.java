@@ -11,6 +11,49 @@ public class TListe {
         this.liste = null;
     }
 
+      public TLISTE(String nom_Fichier) {
+        ArrayList<String> listeLieu = new ArrayList<String>();
+        ArrayList<String> listpts = new ArrayList<String>();
+        try {
+            BufferedReader buffer_csv = new BufferedReader(new FileReader(new File(nom_Fichier)));
+            while (buffer_csv.ready()) {
+                listpts.add(buffer_csv.readLine());
+            }
+            buffer_csv.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Erreur fichier non trouver: " + ex);
+        } catch (IOException ex) {
+            System.out.println("Erreur : " + ex);
+        }
+
+        int index = 0;
+        for (String ligne : listpts) {
+            String[] lieu = ligne.split(":",2);
+            listeLieu.add(lieu[0].split(",")[0]);
+            this.ajoutLieu(new TLIEU(lieu[0].split(",")[1], lieu[0].split(",")[0].charAt(0), null));
+            String listeroute[] = lieu[1].split(";");
+            System.out.println("");
+            listpts.set(index, lieu[1]);
+            index++;
+        }
+
+        TLIEU celluleLieu = this.liste;
+        for (String ligne : listpts){
+            String[] routes = ligne.split(";");
+            for (String route:routes) {
+                char typeRoute = route.split("::")[0].split(",")[0].toCharArray()[0];
+                int longueurRoute = Integer.parseInt(route.split("::")[0].split(",")[1]);
+                String destination = route.split(";")[0].split(",")[1];
+                celluleLieu.ajoutRoute(new TROUTE(longueurRoute, typeRoute, celluleLieu, chercheLieu(destination)));
+            }
+            this.unDistance(celluleLieu.getNomLieu());
+            celluleLieu = celluleLieu.getSuivant();
+        }
+
+
+    }
+
+
     public TLieu chercheLieu(String lieu) {
         TLieu elliste = this.liste;
         while (elliste != null) {
@@ -315,4 +358,17 @@ public class TListe {
         else if (nblieu1 > nblieu2) System.out.println(lieu1 + " est plus gastronomiques que " + lieu2);
         else System.out.println(lieu1 + " est moins gastronomiques que " + lieu2);
     }
+
+      public void ajoutLieu(TLIEU lieuAjoute) {
+        TLIEU celluleLieu = this.liste;
+        if (celluleLieu == null) {
+            this.liste = lieuAjoute;
+        } else {
+            while (celluleLieu.getSuivant() != null) {
+                celluleLieu = celluleLieu.getSuivant();
+            }
+            celluleLieu.setSuivant(lieuAjoute);
+        }
+    }
+
 }
