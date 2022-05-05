@@ -1,15 +1,17 @@
+package saegraphmap.linkedlist;
+
 /**
  *
  * @author p2105876
  */
-public class TROUTE {
+public class TRoute {
     private int distance;
     private char typeRoute;//N (nationnale), D (departementale) ou A (autoroute)
-    private TLIEU lieuRejoint1;
-    private TLIEU lieuRejoint2;
-    private TROUTE suivant;
+    private TLieu lieuRejoint1;
+    private TLieu lieuRejoint2;
+    private TRoute suivant;
 
-    public TROUTE(int distance, char typeRoute, TLIEU lieuRejoint1, TLIEU lieuRejoint2, TROUTE suivant) {
+    public TRoute(int distance, char typeRoute, TLieu lieuRejoint1, TLieu lieuRejoint2, TRoute suivant) {
         this.distance = distance;
         this.typeRoute = typeRoute;
         this.lieuRejoint1 = lieuRejoint1;
@@ -25,15 +27,15 @@ public class TROUTE {
         return typeRoute;
     }
 
-    public TLIEU getLieuRejoint1() {
+    public TLieu getLieuRejoint1() {
         return lieuRejoint1;
     }
 
-    public TLIEU getLieuRejoint2() {
+    public TLieu getLieuRejoint2() {
         return lieuRejoint2;
     }
 
-    public TROUTE getSuivant() {
+    public TRoute getSuivant() {
         return suivant;
     }
 
@@ -45,15 +47,15 @@ public class TROUTE {
         this.typeRoute = typeRoute;
     }
 
-    public void setLieuRejoint1(TLIEU lieuRejoint1) {
+    public void setLieuRejoint1(TLieu lieuRejoint1) {
         this.lieuRejoint1 = lieuRejoint1;
     }
 
-    public void setLieuRejoint2(TLIEU lieuRejoint2) {
+    public void setLieuRejoint2(TLieu lieuRejoint2) {
         this.lieuRejoint2 = lieuRejoint2;
     }
 
-    public void setSuivant(TROUTE suivant) {
+    public void setSuivant(TRoute suivant) {
         this.suivant = suivant;
     }
 

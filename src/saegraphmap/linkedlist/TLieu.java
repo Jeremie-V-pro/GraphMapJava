@@ -1,11 +1,13 @@
-public class TLIEU {
+package saegraphmap.linkedlist;
+
+public class TLieu {
     private String nomLieu;
     private char type; //V (ville), R (restaurant) ou L (lieu de loisir)
-    private TLIEU precedent;
-    private TLIEU suivant;
-    private TROUTE tetelisteroutes;
+    private TLieu precedent;
+    private TLieu suivant;
+    private TRoute tetelisteroutes;
 
-    public TLIEU(String nomLieu, char type, TLIEU suivant, TLIEU precedent, TROUTE tetelisteroutes) {
+    public TLieu(String nomLieu, char type, TLieu suivant, TLieu precedent, TRoute tetelisteroutes) {
         this.nomLieu = nomLieu;
         this.type = type;
         this.suivant = suivant;
@@ -13,7 +15,7 @@ public class TLIEU {
         this.tetelisteroutes = tetelisteroutes;
     }
 
-    public TLIEU() {
+    public TLieu() {
         this.nomLieu = null;
         this.type = 'z';
         this.suivant = null;
@@ -29,15 +31,15 @@ public class TLIEU {
         return type;
     }
 
-    public TLIEU getPrecedent() {
+    public TLieu getPrecedent() {
         return precedent;
     }
 
-    public TLIEU getSuivant() {
+    public TLieu getSuivant() {
         return suivant;
     }
 
-    public TROUTE getTetelisteroutes() {
+    public TRoute getTetelisteroutes() {
         return tetelisteroutes;
     }
 
