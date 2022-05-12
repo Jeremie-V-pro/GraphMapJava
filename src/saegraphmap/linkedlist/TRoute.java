@@ -11,12 +11,11 @@ public class TRoute {
     private TLieu lieuRejoint2;
     private TRoute suivant;
 
-    public TRoute(int distance, char typeRoute, TLieu lieuRejoint1, TLieu lieuRejoint2, TRoute suivant) {
+    public TRoute(int distance, char typeRoute, TLieu lieuRejoint1, TLieu lieuRejoint2) {
         this.distance = distance;
         this.typeRoute = typeRoute;
         this.lieuRejoint1 = lieuRejoint1;
         this.lieuRejoint2 = lieuRejoint2;
-        this.suivant = suivant;
     }
 
     public int getDistance() {
@@ -59,4 +58,14 @@ public class TRoute {
         this.suivant = suivant;
     }
 
+    @Override
+    public String toString() {
+        return "TRoute {" +
+                "distance=" + distance +
+                ", typeRoute=" + typeRoute +
+                ", lieuRejoint1=" + lieuRejoint1.getNomLieu() +
+                ", lieuRejoint2=" + lieuRejoint2 .getNomLieu()+
+                ", suivant=" + suivant +
+                '}';
+    }
 }
