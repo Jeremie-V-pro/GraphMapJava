@@ -5,6 +5,9 @@
  */
 package saegraphmap;
 
+
+import saegraphmap.linkedlist.TListe;
+
 /**
  *
  * @author p2105876
@@ -13,7 +16,7 @@ public class Main {
 
     
     public static void main(String[] args) {
-        
+        TListe t = new TListe("saegraphmap/data/SAE_graph_csv.txt");
     }
     
 }

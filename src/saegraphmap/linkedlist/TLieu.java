@@ -1,17 +1,16 @@
 package saegraphmap.linkedlist;
 
+import java.util.Objects;
+
 public class TLieu {
     private String nomLieu;
     private char type; //V (ville), R (restaurant) ou L (lieu de loisir)
-    private TLieu precedent;
     private TLieu suivant;
     private TRoute tetelisteroutes;
 
-    public TLieu(String nomLieu, char type, TLieu suivant, TLieu precedent, TRoute tetelisteroutes) {
+    public TLieu(String nomLieu, char type, TRoute tetelisteroutes) {
         this.nomLieu = nomLieu;
         this.type = type;
-        this.suivant = suivant;
-        this.precedent = precedent;
         this.tetelisteroutes = tetelisteroutes;
     }
 
@@ -19,7 +18,6 @@ public class TLieu {
         this.nomLieu = null;
         this.type = 'z';
         this.suivant = null;
-        this.precedent = null;
         this.tetelisteroutes = null;
     }
 
@@ -29,10 +27,6 @@ public class TLieu {
 
     public char getType() {
         return type;
-    }
-
-    public TLieu getPrecedent() {
-        return precedent;
     }
 
     public TLieu getSuivant() {
@@ -51,16 +45,16 @@ public class TLieu {
         this.type = type;
     }
 
-    public void setSuivant(TLIEU suivant) {
+    public void setSuivant(TLieu suivant) {
         this.suivant = suivant;
     }
 
-    public void setTetelisteroutes(TROUTE tetelisteroutes) {
+    public void setTetelisteroutes(TRoute tetelisteroutes) {
         this.tetelisteroutes = tetelisteroutes;
     }
 
-    public void ajoutRoute(TROUTE routeAjoute){
-        TROUTE celluleRoute = this.tetelisteroutes;
+    public void ajoutRoute(TRoute routeAjoute){
+        TRoute celluleRoute = this.tetelisteroutes;
         if (celluleRoute == null){
             this.tetelisteroutes = routeAjoute;
         }
@@ -76,8 +70,8 @@ public class TLieu {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TLIEU)) return false;
-        TLIEU tlieu = (TLIEU) o;
+        if (!(o instanceof TLieu)) return false;
+        TLieu tlieu = (TLieu) o;
         return type == tlieu.type && Objects.equals(nomLieu, tlieu.nomLieu);
     }
 
@@ -88,4 +82,4 @@ public class TLieu {
 }
 
 
-}
+
