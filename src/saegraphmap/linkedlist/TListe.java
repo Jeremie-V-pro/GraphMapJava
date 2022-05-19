@@ -10,16 +10,12 @@ public class TListe {
 
     private TLieu liste;
 
-    public TListe() {
-        this.liste = null;
-    }
-
     public TListe(String nom_Fichier) {
-        ArrayList<String> listpts = new ArrayList<>();
+        ArrayList<String> listPts = new ArrayList<>();
         try {
             BufferedReader buffer_csv = new BufferedReader(new FileReader(nom_Fichier));
             while (buffer_csv.ready()) {
-                listpts.add(buffer_csv.readLine());
+                listPts.add(buffer_csv.readLine());
             }
             buffer_csv.close();
         } catch (FileNotFoundException ex) {
@@ -29,15 +25,15 @@ public class TListe {
         }
 
         int index = 0;
-        for (String ligne : listpts) {
+        for (String ligne : listPts) {
             String[] lieu = ligne.split(":", 2);
             this.ajoutLieu(new TLieu(lieu[0].split(",")[1], lieu[0].split(",")[0].charAt(0), null));
-            listpts.set(index, lieu[1]);
+            listPts.set(index, lieu[1]);
             index++;
         }
 
         TLieu celluleLieu = this.liste;
-        for (String ligne : listpts) {
+        for (String ligne : listPts) {
             String[] routes = ligne.split(";");
             for (String route : routes) {
                 char typeRoute = route.split("::")[0].split(",")[0].toCharArray()[0];
@@ -45,12 +41,14 @@ public class TListe {
                 String destination = route.split("::")[1].split(",")[1];
                 celluleLieu.ajoutRoute(new TRoute(longueurRoute, typeRoute, celluleLieu, chercheLieu(destination)));
             }
-            System.out.println(celluleLieu.getTetelisteroutes().toString());
             celluleLieu = celluleLieu.getSuivant();
         }
 
     }
 
+    public TLieu getListe() {
+        return liste;
+    }
 
     public TLieu chercheLieu(String lieu) {
         TLieu elliste = this.liste;
