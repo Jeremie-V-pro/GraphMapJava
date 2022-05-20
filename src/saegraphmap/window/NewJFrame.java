@@ -4,6 +4,11 @@
  */
 package saegraphmap.window;
 
+import saegraphmap.linkedlist.TListe;
+
+import java.awt.*;
+import java.awt.geom.Dimension2D;
+
 /**
  *
  * @author neo
@@ -14,7 +19,9 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public NewJFrame() {
+
         initComponents();
+        this.setPreferredSize(new Dimension(1000,100));
     }
 
     /**
@@ -64,7 +71,9 @@ public class NewJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+
                 new NewJFrame().setVisible(true);
+
             }
         });
     }

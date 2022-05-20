@@ -8,7 +8,9 @@ import saegraphmap.linkedlist.TLieu;
 import saegraphmap.linkedlist.TListe;
 import saegraphmap.linkedlist.TRoute;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,11 +22,15 @@ public class GraphPanel extends javax.swing.JPanel {
      * Creates new form graphPanel
      */
     public GraphPanel() {
-
+        this.listPts = new TListe("src/saegraphmap/data/SAE_graph_csv.txt");;
         initComponents();
-        RoundJToggleButton jtbtn = new RoundJToggleButton();
-        this.add(jtbtn);
-        jtbtn.setBounds(10, 10, 100, 100);
+        TLieu lieu = listPts.getListe();
+        while(lieu != null)
+        {
+            this.add(lieu.getrJTogBtn());
+            lieu = lieu.getSuivant();
+        }
+        generationGraph();
     }
 
     /**
@@ -44,23 +50,37 @@ public class GraphPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
 
-    public void generationGraph(TListe listPts){
-        int fx = 0, fy = 0, longueurVisee = 35, longueurMinStop = 40, nbIterrationMax=500 , iterration = 0;
+    public void generationGraph(){
+        int longueurMinStop = 40, nbIterrationMax=2 , iterration = 0;
         TLieu lieu = null;
         TRoute route = null;
         lieu = listPts.getListe();
 
 //https://www1.pub.informatik.uni-wuerzburg.de/demos/forceDirected.html
-        while (iterration < nbIterrationMax && longueurMax() > longueurMinStop){
+        while (iterration < nbIterrationMax){
             while ( lieu != null){
                 route = lieu.getTetelisteroutes();
                 while (route !=null){
+                    lieu.setFx(forceRep(route.getLieuRejoint1(), route.getLieuRejoint2(), 'x') + forceAttr(route.getLieuRejoint1(), route.getLieuRejoint2(), 'x'));
+                    lieu.setFy(forceRep(route.getLieuRejoint1(), route.getLieuRejoint2(), 'y') + forceAttr(route.getLieuRejoint1(), route.getLieuRejoint2(), 'y'));
                     route = route.getSuivant();
                 }
-                fx = 0;
-                fy = 0;
+                System.out.println(lieu.getFx() + " "+ lieu.getFy());
                 lieu = lieu.getSuivant();
             }
+
+            lieu = listPts.getListe();
+            while (lieu != null){
+                lieu.setX(lieu.getX() + (int)(0.975 * lieu.getFx()));
+                lieu.setY(lieu.getY() + lieu.getFy());
+                lieu.setFx(0);
+                lieu.setFy(0);
+                System.out.println(lieu.getNomLieu() +" "+lieu.getX() +" "+lieu.getY());
+                lieu = lieu.getSuivant();
+            }
+            repaint();
+            iterration +=1;
+            System.out.println(iterration);
         }
     }
 
@@ -68,10 +88,41 @@ public class GraphPanel extends javax.swing.JPanel {
         return 1;
     }
 
+    private int forceRep(TLieu lieu1, TLieu lieu2, char c){
+        if (c == 'x'){
+            int test = (int) ( (double) lieu1.getFx() + (((Math.pow(longueurVisee, 2)) / (double) (Math.abs(lieu1.getX()-lieu2.getX()))) * (double) (lieu1.getX()-lieu2.getX())));
+            System.out.println(lieu1.getX()+" "+lieu2.getY());
+            System.out.println(test +"-----");
+            return test;
+        }
+        else if(c == 'y')
+        {
+            return (int) ( (double) lieu1.getFy() + (((Math.pow(longueurVisee, 2)) / (double) (Math.abs(lieu1.getY()-lieu2.getY()))) * (double) (lieu1.getY()-lieu2.getY())));
+        }
+        else return -1;
+    }
+
+    private int forceAttr(TLieu lieu1, TLieu lieu2, char c){
+        if (c == 'x'){
+            return (int) ( (double) lieu1.getFy() + (((Math.pow(longueurVisee, 2)) / (double) (Math.abs(lieu1.getY()-lieu2.getY()))) * (double) (lieu1.getY()-lieu2.getY())));
+        }
+        else if(c == 'y')
+        {
+            return (int) ( (double) lieu1.getFy() + ( ((Math.pow((Math.abs(lieu1.getY()-lieu2.getY())), 2) ) / (double) longueurVisee) * (double) (lieu1.getY()-lieu2.getY())));
+        }
+        else return -1;
+    }
+
+
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setColor(Color.white);
         g2d.fillRect(0,0,this.getWidth(),this.getHeight());
     }
+
+    private int longueurVisee = 35;
+    private TListe listPts;
+
+    private ArrayList<RoundJToggleButton> listBtn;
 }

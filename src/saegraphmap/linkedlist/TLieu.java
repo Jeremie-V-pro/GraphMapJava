@@ -1,5 +1,7 @@
 package saegraphmap.linkedlist;
 
+import saegraphmap.window.RoundJToggleButton;
+
 import java.util.Objects;
 
 public class TLieu {
@@ -8,8 +10,7 @@ public class TLieu {
     private TLieu suivant;
     private TRoute tetelisteroutes;
 
-    //coordoné du point sur la zonne d'affichage
-    private int x, y;
+    private RoundJToggleButton rJTogBtn;
 
     private int fx = 0, fy=0;
 
@@ -17,8 +18,8 @@ public class TLieu {
         this.nomLieu = nomLieu;
         this.type = type;
         this.tetelisteroutes = tetelisteroutes;
-        this.x = (int) Math.floor(Math.random()*(1000-0+1)+0);
-        this.y = (int) Math.floor(Math.random()*(1000-0+1)+0);
+        this.rJTogBtn = new RoundJToggleButton();
+        this.rJTogBtn.setBounds((int) Math.floor(Math.random()*(1000-0+1)+0),(int) Math.floor(Math.random()*(1000-0+1)+0),15,15);
     }
 
     public TLieu() {
@@ -58,19 +59,39 @@ public class TLieu {
 
 
     public int getX() {
-        return x;
+        return this.rJTogBtn.getBounds().x;
     }
 
     public int getY() {
-        return y;
+        return this.rJTogBtn.getBounds().y;
     }
 
     public void setX(int x) {
-        this.x = x;
+        this.rJTogBtn.setBounds(x,this.rJTogBtn.getBounds().y, 15, 15);
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.rJTogBtn.setBounds(this.rJTogBtn.getBounds().y,y, 15, 15);
+    }
+
+    public RoundJToggleButton getrJTogBtn() {
+        return rJTogBtn;
+    }
+
+    public int getFx() {
+        return fx;
+    }
+
+    public int getFy() {
+        return fy;
+    }
+
+    public void setFx(int fx) {
+        this.fx = fx;
+    }
+
+    public void setFy(int fy) {
+        this.fy = fy;
     }
 
     public void setTetelisteroutes(TRoute tetelisteroutes) {
