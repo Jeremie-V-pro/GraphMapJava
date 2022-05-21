@@ -21,7 +21,7 @@ public class NewJFrame extends javax.swing.JFrame {
     public NewJFrame() {
 
         initComponents();
-        this.setPreferredSize(new Dimension(1000,100));
+        this.setPreferredSize(new Dimension(1000,1000));
     }
 
     /**
@@ -72,8 +72,11 @@ public class NewJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
-                new NewJFrame().setVisible(true);
+                NewJFrame j = new NewJFrame();
+                j.pack();
+                j.setVisible(true);
 
+                j.graphPanel1.generationGraph();
             }
         });
     }

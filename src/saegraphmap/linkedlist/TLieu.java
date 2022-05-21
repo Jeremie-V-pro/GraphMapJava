@@ -12,14 +12,20 @@ public class TLieu {
 
     private RoundJToggleButton rJTogBtn;
 
-    private int fx = 0, fy=0;
+    private double fx = 0, fy=0;
+
+    private double x ,y;
 
     public TLieu(String nomLieu, char type, TRoute tetelisteroutes) {
         this.nomLieu = nomLieu;
         this.type = type;
         this.tetelisteroutes = tetelisteroutes;
         this.rJTogBtn = new RoundJToggleButton();
-        this.rJTogBtn.setBounds((int) Math.floor(Math.random()*(1000-0+1)+0),(int) Math.floor(Math.random()*(1000-0+1)+0),15,15);
+        this.x = (int) Math.floor(Math.random()*(1000-0+1)+0);
+        this.y = (int) Math.floor(Math.random()*(1000-0+1)+0);
+        this.rJTogBtn = new RoundJToggleButton();
+        this.rJTogBtn.setBounds((int) this.x, (int) this.y ,15,15);
+
     }
 
     public TLieu() {
@@ -58,40 +64,42 @@ public class TLieu {
     }
 
 
-    public int getX() {
-        return this.rJTogBtn.getBounds().x;
+    public double getX() {
+        return this.x;
     }
 
-    public int getY() {
-        return this.rJTogBtn.getBounds().y;
+    public double getY() {
+        return this.y;
     }
 
-    public void setX(int x) {
-        this.rJTogBtn.setBounds(x,this.rJTogBtn.getBounds().y, 15, 15);
+    public void setX(double x) {
+        this.x = x;
+        this.rJTogBtn.setBounds( (int) x,this.rJTogBtn.getBounds().y, 15, 15);
     }
 
-    public void setY(int y) {
-        this.rJTogBtn.setBounds(this.rJTogBtn.getBounds().y,y, 15, 15);
+    public void setY(double y) {
+        this.y = y;
+        this.rJTogBtn.setBounds(this.rJTogBtn.getBounds().x, (int)y, 15, 15);
     }
 
     public RoundJToggleButton getrJTogBtn() {
         return rJTogBtn;
     }
 
-    public int getFx() {
+    public double getFx() {
         return fx;
     }
 
-    public int getFy() {
+    public double getFy() {
         return fy;
     }
 
-    public void setFx(int fx) {
-        this.fx = fx;
+    public void setFx(double fxt) {
+        this.fx = fxt;
     }
 
-    public void setFy(int fy) {
-        this.fy = fy;
+    public void setFy(double fyt) {
+        this.fy = fyt;
     }
 
     public void setTetelisteroutes(TRoute tetelisteroutes) {
