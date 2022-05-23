@@ -48,7 +48,6 @@ public class TListe {
             System.out.println(celluleLieu.getTetelisteroutes().toString());
             celluleLieu = celluleLieu.getSuivant();
         }
-
     }
 
 
