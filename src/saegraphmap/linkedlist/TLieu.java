@@ -24,7 +24,7 @@ public class TLieu {
         this.x = (int) Math.floor(Math.random()*(1000-0+1)+0);
         this.y = (int) Math.floor(Math.random()*(1000-0+1)+0);
         this.rJTogBtn = new RoundJToggleButton();
-        this.rJTogBtn.setBounds((int) this.x, (int) this.y ,15,15);
+        this.rJTogBtn.setBounds((int) this.x, (int) this.y ,25,25);
 
     }
 

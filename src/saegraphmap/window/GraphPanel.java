@@ -104,7 +104,7 @@ public class GraphPanel extends javax.swing.JPanel {
             temp = cool(temp);
             this.paintComponent(super.getGraphics());
             try{
-                Thread.sleep(10);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -162,17 +162,44 @@ public class GraphPanel extends javax.swing.JPanel {
         g2d.fillRect(0,0,this.getWidth(),this.getHeight());
         TRoute route;
         TLieu lieu = listPts.getListe();
-        g2d.setColor(Color.black);
         while (lieu != null){
             route = lieu.getTetelisteroutes();
             while (route != null){
-                g2d.drawLine((int)route.getLieuRejoint1().getX() + 7, (int)route.getLieuRejoint1().getY() +7, (int)route.getLieuRejoint2().getX() +7, (int)route.getLieuRejoint2().getY() +7);
+                if(route.getTypeRoute() == 'A' && afficheAutoroute) {
+                    g2d.setColor(Color.blue);
+                    g2d.drawLine((int)route.getLieuRejoint1().getX() + 7, (int)route.getLieuRejoint1().getY() +7, (int)route.getLieuRejoint2().getX() +7, (int)route.getLieuRejoint2().getY() +7);
+                }
+                else if(route.getTypeRoute() == 'N' && afficheNationale){
+                    g2d.setColor(Color.red);
+                    g2d.drawLine((int)route.getLieuRejoint1().getX() + 7, (int)route.getLieuRejoint1().getY() +7, (int)route.getLieuRejoint2().getX() +7, (int)route.getLieuRejoint2().getY() +7);
+                }
+                else if(route.getTypeRoute() == 'D' && afficheDepartemental){
+                    g2d.setColor(Color.green);
+                    g2d.drawLine((int)route.getLieuRejoint1().getX() + 7, (int)route.getLieuRejoint1().getY() +7, (int)route.getLieuRejoint2().getX() +7, (int)route.getLieuRejoint2().getY() +7);
+                }
+
                 route = route.getSuivant();
             }
             lieu = lieu.getSuivant();
         }
     }
 
+    public void setAfficheAutoroute(boolean afficheAutoroute) {
+        this.afficheAutoroute = afficheAutoroute;
+    }
+
+    public void setAfficheNationale(boolean fficheNationale) {
+        this.afficheNationale = fficheNationale;
+    }
+
+    public void setAfficheDepartemental(boolean afficheDepartemental) {
+        this.afficheDepartemental = afficheDepartemental;
+    }
+
     private final double longueurVisee = 50;
     private final TListe listPts;
+
+    private boolean afficheAutoroute = true;
+    private boolean afficheNationale =true;
+    private boolean afficheDepartemental = true;
 }
