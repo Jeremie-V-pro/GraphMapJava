@@ -63,6 +63,22 @@ public class TListe {
         }
         return null;
     }
+    
+    public ArrayList chercheRoutes(String lieu1, String lieu2) {
+        TLieu elliste = this.liste;
+        ArrayList routes = new ArrayList();
+        while (elliste != null) {
+            TRoute ellisteroute = this.liste.getTetelisteroutes();
+            while (ellisteroute != null) {
+                if ((ellisteroute.getLieuRejoint1().equals(lieu1) && ellisteroute.getLieuRejoint2().equals(lieu2)) || (ellisteroute.getLieuRejoint1().equals(lieu2) && ellisteroute.getLieuRejoint2().equals(lieu1))) {
+                    routes.add(ellisteroute.getTypeRoute() + " " + ellisteroute.getDistance());
+                }
+                ellisteroute = ellisteroute.getSuivant();
+            }
+            elliste = elliste.getSuivant();
+        }
+        return routes;
+    }
 
     public void afficherVilles() {
         TLieu elliste = this.liste;
@@ -309,10 +325,8 @@ public class TListe {
     }
 
     public boolean isDeuxDistance(String lieu1, String lieu2) {
-        TLieu tlieu1 = new TLieu();
-        tlieu1 = chercheLieu(lieu1);
-        TLieu tlieu2 = new TLieu();
-        tlieu2 = chercheLieu(lieu1);
+        TLieu tlieu1 = chercheLieu(lieu1);
+        TLieu tlieu2 = chercheLieu(lieu2);
         TRoute elliste1 = tlieu1.getTetelisteroutes();
         while (elliste1 != null) {
             TRoute elliste2 = tlieu2.getTetelisteroutes();
