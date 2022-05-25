@@ -21,12 +21,12 @@ public class GraphPanel extends javax.swing.JPanel {
      * Creates new form graphPanel
      */
     public GraphPanel() {
-        this.listPts = new TListe("src/saegraphmap/data/SAE_graph_csv.txt");
+        this.listPts = new TListe("src/saegraphmap/data/SAE_graph.csv");
         initComponents();
         TLieu lieu = listPts.getListe();
         while(lieu != null)
         {
-            this.add(lieu.getrJTogBtn());
+            this.add(lieu.getrJTogBtn());       
             lieu = lieu.getSuivant();
         }
     }
@@ -51,6 +51,7 @@ public class GraphPanel extends javax.swing.JPanel {
     public void generationGraph(){
         double nbIterrationMax=1000 , iterration = 1, maxForce = 1000, force;
         double temp = 1;
+        double minX=Integer.MAX_VALUE , minY=Integer.MAX_VALUE, maxX=Integer.MIN_VALUE , maxY = Integer.MIN_VALUE;
         TLieu lieu;
         TLieu lieu2;
         TRoute route;
@@ -95,21 +96,37 @@ public class GraphPanel extends javax.swing.JPanel {
 
                 force = vecLength(lieu.getFx(), lieu.getFy());
                 maxForce = Math.max(maxForce, force);
-                System.out.println(lieu.getFx() + " "+ lieu.getFy());
-
                 lieu.setX(lieu.getX() + lieu.getFx());
                 lieu.setY(lieu.getY() + lieu.getFy());
                 lieu = lieu.getSuivant();
             }
             temp = cool(temp);
-            this.paintComponent(super.getGraphics());
             try{
                 Thread.sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println(iterration);
         }
+        lieu =listPts.getListe();
+        System.out.println("test 1");
+        while(lieu !=null){
+            if     (lieu.getX()<minX) minX = lieu.getX();
+            else if(lieu.getX()>maxX) maxX = lieu.getX();
+            if     (lieu.getY()<minY) minY = lieu.getY();
+            else if(lieu.getY()>maxY) maxY = lieu.getY();
+            lieu = lieu.getSuivant();
+        }
+        lieu =listPts.getListe();
+        System.out.println("test 2");
+        while(lieu !=null){
+            lieu.setX(lieu.getX() - minX + 50 );
+            lieu.setY(lieu.getY() - minY + 50 );
+            lieu = lieu.getSuivant();
+        }
+        System.out.println("test 3");
+        if(maxX - minX > this.getWidth()) this.setSize((int) (maxX-minX+50), this.getHeight());
+        if(maxY - minY > this.getHeight()) this.setSize(this.getWidth(), (int) (maxY-minY+50));
+        System.out.println("test 4");
     }
 
 
@@ -145,7 +162,6 @@ public class GraphPanel extends javax.swing.JPanel {
     }
 
     private double applyTemp(double dir, double force, double temp){
-        System.out.println("dir : "+ dir +" force : "+ force + " temp : "+temp);
         return ( dir /  force * Math.min(force, temp * this.longueurVisee * 2));
     }
 
