@@ -7,28 +7,32 @@ package saegraphmap.window;
 import saegraphmap.linkedlist.TLieu;
 import saegraphmap.linkedlist.TListe;
 import saegraphmap.linkedlist.TRoute;
+import saegraphmap.window.listener.GraphPanelListener;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author neo
  */
-public class GraphPanel extends javax.swing.JPanel {
+public class GraphPanel extends javax.swing.JPanel implements MouseListener,MouseMotionListener {
 
     /**
      * Creates new form graphPanel
      */
-    public GraphPanel() {
-        this.listPts = new TListe("src/saegraphmap/data/SAE_graph.csv");
+    public GraphPanel(TListe listPts) {
+        this.listPts = listPts;
+        generationGraph();
         initComponents();
-        TLieu lieu = listPts.getListe();
-        while(lieu != null)
-        {
-            this.add(lieu.getrJTogBtn());       
-            lieu = lieu.getSuivant();
-        }
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
 
     /**
@@ -101,14 +105,10 @@ public class GraphPanel extends javax.swing.JPanel {
                 lieu = lieu.getSuivant();
             }
             temp = cool(temp);
-            try{
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            this.repaint();
+
         }
         lieu =listPts.getListe();
-        System.out.println("test 1");
         while(lieu !=null){
             if     (lieu.getX()<minX) minX = lieu.getX();
             else if(lieu.getX()>maxX) maxX = lieu.getX();
@@ -117,18 +117,14 @@ public class GraphPanel extends javax.swing.JPanel {
             lieu = lieu.getSuivant();
         }
         lieu =listPts.getListe();
-        System.out.println("test 2");
         while(lieu !=null){
             lieu.setX(lieu.getX() - minX + 50 );
             lieu.setY(lieu.getY() - minY + 50 );
             lieu = lieu.getSuivant();
         }
-        System.out.println("test 3");
         if(maxX - minX > this.getWidth()) this.setSize((int) (maxX-minX+50), this.getHeight());
         if(maxY - minY > this.getHeight()) this.setSize(this.getWidth(), (int) (maxY-minY+50));
-        System.out.println("test 4");
     }
-
 
     private double forceRep(TLieu lieu1, TLieu lieu2){
         return (Math.pow(this.longueurVisee,2) / Math.max(this.dist(lieu1, lieu2),0.01));
@@ -181,22 +177,35 @@ public class GraphPanel extends javax.swing.JPanel {
         while (lieu != null){
             route = lieu.getTetelisteroutes();
             while (route != null){
-                if(route.getTypeRoute() == 'A' && afficheAutoroute) {
+                if(route.getTypeRoute() == 'A' && afficheAutoroute && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()) {
                     g2d.setColor(Color.blue);
-                    g2d.drawLine((int)route.getLieuRejoint1().getX() + 7, (int)route.getLieuRejoint1().getY() +7, (int)route.getLieuRejoint2().getX() +7, (int)route.getLieuRejoint2().getY() +7);
+                    g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
                 }
-                else if(route.getTypeRoute() == 'N' && afficheNationale){
+                else if(route.getTypeRoute() == 'N' && afficheNationale && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()){
                     g2d.setColor(Color.red);
-                    g2d.drawLine((int)route.getLieuRejoint1().getX() + 7, (int)route.getLieuRejoint1().getY() +7, (int)route.getLieuRejoint2().getX() +7, (int)route.getLieuRejoint2().getY() +7);
+                    g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
                 }
-                else if(route.getTypeRoute() == 'D' && afficheDepartemental){
+                else if(route.getTypeRoute() == 'D' && afficheDepartemental && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()){
                     g2d.setColor(Color.green);
-                    g2d.drawLine((int)route.getLieuRejoint1().getX() + 7, (int)route.getLieuRejoint1().getY() +7, (int)route.getLieuRejoint2().getX() +7, (int)route.getLieuRejoint2().getY() +7);
+                    g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
                 }
 
                 route = route.getSuivant();
             }
             lieu = lieu.getSuivant();
+        }
+        lieu = listPts.getListe();
+
+        while (lieu != null){
+            if(lieu.getrJTogBtn().isVisible()){
+                if(lieu.getrJTogBtn().isSelected()){
+                    g2d.setColor(Color.BLACK);
+                    g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getTaillePts()+4,lieu.getrJTogBtn().getTaillePts()+4);
+                }
+                g2d.setColor(lieu.getrJTogBtn().getCouleurPts());
+                g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2  ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 ,lieu.getrJTogBtn().getTaillePts(),lieu.getrJTogBtn().getTaillePts());
+                lieu = lieu.getSuivant();
+            }
         }
     }
 
@@ -212,10 +221,77 @@ public class GraphPanel extends javax.swing.JPanel {
         this.afficheDepartemental = afficheDepartemental;
     }
 
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        TLieu lieu = listPts.getListe();
+        TLieu lieuChangeEtatBtn = listPts.getListe();
+        while (lieu != null){
+            if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
+                lieu.getrJTogBtn().setEtatBtn(!lieu.getrJTogBtn().isSelected());
+                while (lieuChangeEtatBtn != null){
+                    if(!lieuChangeEtatBtn.equals(lieu)) lieuChangeEtatBtn.getrJTogBtn().setEtatBtn(false);
+                    lieuChangeEtatBtn = lieuChangeEtatBtn.getSuivant();
+                }
+                this.repaint();
+                for (GraphPanelListener listener : listeners) {
+                    if(lieu.getrJTogBtn().isSelected())
+                        listener.lieuSelectedChanged(lieu);
+                    else
+                        listener.lieuSelectedChanged(null);
+                }
+                break;
+            }
+            lieu = lieu.getSuivant();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent mouseEvent) {
+        TLieu lieu = listPts.getListe();
+        while (lieu != null){
+            if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
+                this.setToolTipText(lieu.getNomLieu());
+                return;
+            }
+            lieu = lieu.getSuivant();
+        }
+        this.setToolTipText(null);
+    }
+
+    public void addGraphPanelListener(GraphPanelListener listener){
+        this.listeners.add(listener);
+    }
     private final double longueurVisee = 50;
     private final TListe listPts;
-
     private boolean afficheAutoroute = true;
     private boolean afficheNationale =true;
+
     private boolean afficheDepartemental = true;
+
+    private List<GraphPanelListener> listeners = new ArrayList<>();
 }

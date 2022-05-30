@@ -4,7 +4,9 @@
  */
 package saegraphmap.window;
 
+import saegraphmap.linkedlist.TLieu;
 import saegraphmap.linkedlist.TListe;
+import saegraphmap.window.listener.GraphPanelListener;
 
 import java.awt.*;
 import java.awt.geom.Dimension2D;
@@ -13,7 +15,7 @@ import java.awt.geom.Dimension2D;
  *
  * @author neo
  */
-public class NewJFrame extends javax.swing.JFrame {
+public class NewJFrame extends javax.swing.JFrame implements GraphPanelListener {
 
     /**
      * Creates new form NewJFrame
@@ -22,6 +24,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         initComponents();
         this.setPreferredSize(new Dimension(1000,1000));
+        this.graphPanel1.addGraphPanelListener(this);
     }
 
     /**
@@ -33,8 +36,7 @@ public class NewJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        graphPanel1 = new saegraphmap.window.GraphPanel();
-
+        graphPanel1 = new saegraphmap.window.GraphPanel(new TListe("src/saegraphmap/data/SAE_graph.csv"));
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().add(graphPanel1, java.awt.BorderLayout.CENTER);
 
@@ -75,13 +77,16 @@ public class NewJFrame extends javax.swing.JFrame {
                 NewJFrame j = new NewJFrame();
                 j.pack();
                 j.setVisible(true);
-
-                j.graphPanel1.generationGraph();
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private saegraphmap.window.GraphPanel graphPanel1;
+
+    @Override
+    public void lieuSelectedChanged(TLieu lieuEvent) {
+        System.out.println("c'est pas coul tt ça ?");
+    }
     // End of variables declaration//GEN-END:variables
 }

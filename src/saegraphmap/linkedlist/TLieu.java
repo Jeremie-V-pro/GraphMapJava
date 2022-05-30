@@ -20,12 +20,9 @@ public class TLieu {
         this.nomLieu = nomLieu;
         this.type = type;
         this.tetelisteroutes = tetelisteroutes;
-        this.rJTogBtn = new RoundJToggleButton();
         this.x = (int) Math.floor(Math.random()*(1000-0+1)+0);
         this.y = (int) Math.floor(Math.random()*(1000-0+1)+0);
-        this.rJTogBtn = new RoundJToggleButton();
-        this.rJTogBtn.setBounds((int) this.x, (int) this.y ,25,25);
-
+        this.rJTogBtn= new RoundJToggleButton((int)this.x, (int)this.y, this.type);
     }
 
     public TLieu() {
@@ -74,12 +71,12 @@ public class TLieu {
 
     public void setX(double x) {
         this.x = x;
-        this.rJTogBtn.setBounds( (int) x,this.rJTogBtn.getBounds().y, 15, 15);
+        this.rJTogBtn.setX((int) x);
     }
 
     public void setY(double y) {
         this.y = y;
-        this.rJTogBtn.setBounds(this.rJTogBtn.getBounds().x, (int)y, 15, 15);
+        this.rJTogBtn.setY((int) y);
     }
 
     public RoundJToggleButton getrJTogBtn() {

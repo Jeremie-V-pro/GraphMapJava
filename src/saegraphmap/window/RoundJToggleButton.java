@@ -1,43 +1,73 @@
 package saegraphmap.window;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 
-public class RoundJToggleButton extends JToggleButton {
-    public RoundJToggleButton(){
-        setContentAreaFilled(false);
-    }
-    @Override
-    protected void paintComponent(Graphics g)
-    {
-        if (this.isSelected()) {
-            g.setColor(new Color(5,5,100));
+public class RoundJToggleButton {
+   private int x,y;
+   private int taillePts = 24;
+   private Color couleurPts;
+   private boolean etatBtn = false, visible = true;
 
-        } else {
-            g.setColor(new Color(10,10,150));
+
+    public RoundJToggleButton(int x, int y, char typeVille) {
+        this.x = x;
+        this.y = y;
+        switch (typeVille) {
+            case 'V' -> this.couleurPts = new Color(92, 92, 92);
+            case 'R' -> this.couleurPts = new Color(73, 38, 24);
+            case 'L' -> this.couleurPts = new Color(230, 168, 0);
         }
-        g.fillOval(0, 0, getSize().width-1,getSize().height-1);
-
-        super.paintComponent(g);
     }
 
-
-
-    @Override
-    protected void paintBorder(Graphics g) {
-        g.setColor(Color.red);
-        g.drawOval(0, 0, getSize().width-1,getSize().height-1);
+    public boolean isVisible() {
+        return visible;
+    }
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
-    private Shape shape;
-    @Override
-    public boolean contains(int x, int y) {
-        if (shape == null ||
-                !shape.getBounds().equals(getBounds())) {
-            shape = new Ellipse2D.Float(0, 0, getWidth(), getHeight());
-        }
-        return shape.contains(x, y);
+    public int getX() {
+        return x;
     }
 
+    public int getY() {
+        return y;
+    }
+
+    public int getTaillePts() {
+        return taillePts;
+    }
+
+    public Color getCouleurPts() {
+        return couleurPts;
+    }
+
+    public boolean isSelected() {
+        return etatBtn;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setCoordonate(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setTaillePts(int taillePts) {
+        this.taillePts = taillePts;
+    }
+
+    public void setCouleurPts(Color couleurPts) {
+        this.couleurPts = couleurPts;
+    }
+
+    public void setEtatBtn(boolean etatBtn) {
+        this.etatBtn = etatBtn;
+    }
 }
