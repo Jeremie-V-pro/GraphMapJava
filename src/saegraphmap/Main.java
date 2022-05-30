@@ -6,6 +6,7 @@
 package saegraphmap;
 
 
+import javax.swing.JFrame;
 import saegraphmap.linkedlist.TListe;
 
 /**

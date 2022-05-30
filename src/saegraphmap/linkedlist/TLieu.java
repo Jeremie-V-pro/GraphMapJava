@@ -1,5 +1,7 @@
 package saegraphmap.linkedlist;
 
+import saegraphmap.window.RoundJToggleButton;
+
 import java.util.Objects;
 
 public class TLieu {
@@ -8,10 +10,19 @@ public class TLieu {
     private TLieu suivant;
     private TRoute tetelisteroutes;
 
+    private RoundJToggleButton rJTogBtn;
+
+    private double fx = 0, fy=0;
+
+    private double x ,y;
+
     public TLieu(String nomLieu, char type, TRoute tetelisteroutes) {
         this.nomLieu = nomLieu;
         this.type = type;
         this.tetelisteroutes = tetelisteroutes;
+        this.x = (int) Math.floor(Math.random()*(1000-0+1)+0);
+        this.y = (int) Math.floor(Math.random()*(1000-0+1)+0);
+        this.rJTogBtn= new RoundJToggleButton((int)this.x, (int)this.y, this.type);
     }
 
     public TLieu() {
@@ -47,6 +58,45 @@ public class TLieu {
 
     public void setSuivant(TLieu suivant) {
         this.suivant = suivant;
+    }
+
+
+    public double getX() {
+        return this.x;
+    }
+
+    public double getY() {
+        return this.y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+        this.rJTogBtn.setX((int) x);
+    }
+
+    public void setY(double y) {
+        this.y = y;
+        this.rJTogBtn.setY((int) y);
+    }
+
+    public RoundJToggleButton getrJTogBtn() {
+        return rJTogBtn;
+    }
+
+    public double getFx() {
+        return fx;
+    }
+
+    public double getFy() {
+        return fy;
+    }
+
+    public void setFx(double fxt) {
+        this.fx = fxt;
+    }
+
+    public void setFy(double fyt) {
+        this.fy = fyt;
     }
 
     public void setTetelisteroutes(TRoute tetelisteroutes) {
