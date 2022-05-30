@@ -17,7 +17,7 @@ public class Main {
 
     
     public static void main(String[] args) {
-        TListe t = new TListe("saegraphmap/data/SAE_graph_csv.txt");
+        TListe t = new TListe("src/saegraphmap/data/SAE_graph.csv");
     }
     
 }

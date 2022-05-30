@@ -13,9 +13,9 @@ public class RoundJToggleButton {
         this.x = x;
         this.y = y;
         switch (typeVille) {
-            case 'V' -> this.couleurPts = new Color(92, 92, 92);
-            case 'R' -> this.couleurPts = new Color(73, 38, 24);
-            case 'L' -> this.couleurPts = new Color(230, 168, 0);
+            case 'V' : this.couleurPts = new Color(92, 92, 92);break;
+            case 'R' : this.couleurPts = new Color(73, 38, 24);break;
+            case 'L' : this.couleurPts = new Color(230, 168, 0);break;
         }
     }
 

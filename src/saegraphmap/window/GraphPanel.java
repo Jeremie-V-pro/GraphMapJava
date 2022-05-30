@@ -29,7 +29,6 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         initComponents();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
-        generationGraph();
     }
     /**
      * Creates new form graphPanel
@@ -175,43 +174,46 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
 
     @Override
     public void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g.create();
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.white);
         g2d.fillRect(0,0,this.getWidth(),this.getHeight());
         TRoute route;
-        TLieu lieu = listPts.getListe();
-        while (lieu != null){
-            route = lieu.getTetelisteroutes();
-            while (route != null){
-                if(route.getTypeRoute() == 'A' && afficheAutoroute && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()) {
-                    g2d.setColor(Color.blue);
-                    g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
-                }
-                else if(route.getTypeRoute() == 'N' && afficheNationale && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()){
-                    g2d.setColor(Color.red);
-                    g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
-                }
-                else if(route.getTypeRoute() == 'D' && afficheDepartemental && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()){
-                    g2d.setColor(Color.green);
-                    g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
-                }
+        if(listPts!=null){
+            TLieu lieu = listPts.getListe();
+            while (lieu != null){
+                route = lieu.getTetelisteroutes();
+                while (route != null){
+                    if(route.getTypeRoute() == 'A' && afficheAutoroute && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()) {
+                        g2d.setColor(Color.blue);
+                        g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
+                    }
+                    else if(route.getTypeRoute() == 'N' && afficheNationale && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()){
+                        g2d.setColor(Color.red);
+                        g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
+                    }
+                    else if(route.getTypeRoute() == 'D' && afficheDepartemental && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()){
+                        g2d.setColor(Color.green);
+                        g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
+                    }
 
-                route = route.getSuivant();
-            }
-            lieu = lieu.getSuivant();
-        }
-        lieu = listPts.getListe();
-
-        while (lieu != null){
-            if(lieu.getrJTogBtn().isVisible()){
-                if(lieu.getrJTogBtn().isSelected()){
-                    g2d.setColor(Color.BLACK);
-                    g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getTaillePts()+4,lieu.getrJTogBtn().getTaillePts()+4);
+                    route = route.getSuivant();
                 }
-                g2d.setColor(lieu.getrJTogBtn().getCouleurPts());
-                g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2  ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 ,lieu.getrJTogBtn().getTaillePts(),lieu.getrJTogBtn().getTaillePts());
                 lieu = lieu.getSuivant();
+            }
+            lieu = listPts.getListe();
+
+            while (lieu != null){
+                if(lieu.getrJTogBtn().isVisible()){
+                    if(lieu.getrJTogBtn().isSelected()){
+                        g2d.setColor(Color.BLACK);
+                        g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getTaillePts()+4,lieu.getrJTogBtn().getTaillePts()+4);
+                    }
+                    System.out.println(lieu.getrJTogBtn().getCouleurPts().toString());
+                    g2d.setColor(lieu.getrJTogBtn().getCouleurPts());
+                    g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2  ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 ,lieu.getrJTogBtn().getTaillePts(),lieu.getrJTogBtn().getTaillePts());
+                    lieu = lieu.getSuivant();
+                }
             }
         }
     }
@@ -289,15 +291,17 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-        TLieu lieu = listPts.getListe();
-        while (lieu != null){
-            if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
-                this.setToolTipText(lieu.getNomLieu());
-                return;
+        if(listPts!=null){
+            TLieu lieu = listPts.getListe();
+            while (lieu != null){
+                if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
+                    this.setToolTipText(lieu.getNomLieu());
+                    return;
+                }
+                lieu = lieu.getSuivant();
             }
-            lieu = lieu.getSuivant();
+            this.setToolTipText(null);
         }
-        this.setToolTipText(null);
     }
 
     public void addGraphPanelListener(GraphPanelListener listener){
@@ -309,6 +313,6 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
     private boolean afficheNationale =true;
 
     private boolean afficheDepartemental = true;
-
+    
     private List<GraphPanelListener> listeners = new ArrayList<>();
 }

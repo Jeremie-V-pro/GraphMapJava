@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package window;
+package saegraphmap.window;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,6 +13,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import saegraphmap.linkedlist.TLieu;
 import saegraphmap.linkedlist.TListe;
+import saegraphmap.window.GraphPanel;
 
 /**
  *
@@ -26,7 +27,7 @@ public class Mainscreen extends javax.swing.JFrame {
     public Mainscreen() {
         initComponents();
     }
-    TListe fichier = new TListe();
+    TListe fichier = null;
     TLieu lieuselection = new TLieu();
     TLieu lieuselectioncompa = new TLieu();
 
@@ -105,6 +106,8 @@ public class Mainscreen extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
+        jScrollGraphpane = new javax.swing.JScrollPane();
+        graphPanel1 = new saegraphmap.window.GraphPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -123,7 +126,6 @@ public class Mainscreen extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jEditorPane1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel1.setMaximumSize(new java.awt.Dimension(150, 32767));
         jPanel1.setMinimumSize(new java.awt.Dimension(150, 320));
@@ -191,7 +193,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3);
@@ -239,7 +241,7 @@ public class Mainscreen extends javax.swing.JFrame {
                     .addComponent(jRadioButton3)
                     .addComponent(jRadioButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel10);
@@ -479,7 +481,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel20)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBox4)
                     .addComponent(jCheckBox6)
@@ -583,7 +585,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel23)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -599,23 +601,20 @@ public class Mainscreen extends javax.swing.JFrame {
         getContentPane().add(jPanel2, java.awt.BorderLayout.LINE_START);
 
         jPanel4.setBackground(java.awt.Color.white);
+        jPanel4.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 591, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 544, Short.MAX_VALUE)
-        );
+        jScrollGraphpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollGraphpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollGraphpane.setOpaque(false);
+        jScrollGraphpane.setViewportView(graphPanel1);
+
+        jPanel4.add(jScrollGraphpane, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("Fichier");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Ouvrir un CSV");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -789,6 +788,7 @@ public class Mainscreen extends javax.swing.JFrame {
             String path = new String();
             path = file.getAbsolutePath();
             fichier = new TListe(path);
+            graphPanel1.ajoutListePts(fichier);
             }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -994,6 +994,7 @@ public class Mainscreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private saegraphmap.window.GraphPanel graphPanel1;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
@@ -1064,6 +1065,7 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JScrollPane jScrollGraphpane;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
