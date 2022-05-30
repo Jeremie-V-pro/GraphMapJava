@@ -24,15 +24,22 @@ import java.util.List;
  */
 public class GraphPanel extends javax.swing.JPanel implements MouseListener,MouseMotionListener {
 
+
+    public GraphPanel() {
+        initComponents();
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
+        generationGraph();
+    }
     /**
      * Creates new form graphPanel
      */
     public GraphPanel(TListe listPts) {
         this.listPts = listPts;
-        generationGraph();
         initComponents();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+        generationGraph();
     }
 
     /**
@@ -221,6 +228,16 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         this.afficheDepartemental = afficheDepartemental;
     }
 
+    public void viderListPts(){
+        this.listPts = null;
+        repaint();
+    }
+
+    public void ajoutListePts(TListe liste){
+        this.listPts = liste;
+        generationGraph();
+    }
+
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         TLieu lieu = listPts.getListe();
@@ -287,7 +304,7 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         this.listeners.add(listener);
     }
     private final double longueurVisee = 50;
-    private final TListe listPts;
+    private TListe listPts;
     private boolean afficheAutoroute = true;
     private boolean afficheNationale =true;
 
