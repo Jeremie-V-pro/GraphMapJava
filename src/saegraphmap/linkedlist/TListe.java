@@ -79,37 +79,40 @@ public class TListe {
         return routes;
     }
 
-    public void afficherVilles() {
+    public ArrayList afficherVilles() {
         TLieu elliste = this.liste;
-        System.out.println("liste des villes :");
+        ArrayList villes = new ArrayList();
         while (elliste != null) {
             if (elliste.getType() == 'V') {
-                System.out.println(elliste.getNomLieu());
+                villes.add(elliste.getNomLieu());
             }
             elliste = elliste.getSuivant();
         }
+        return villes;
     }
 
-    public void afficherRestaurants() {
+    public ArrayList afficherRestaurants() {
         TLieu elliste = this.liste;
-        System.out.println("liste des restaurants :");
+        ArrayList resto = new ArrayList();
         while (elliste != null) {
             if (elliste.getType() == 'R') {
-                System.out.println(elliste.getNomLieu());
+                resto.add(elliste.getNomLieu());
             }
             elliste = elliste.getSuivant();
         }
+        return resto;
     }
 
-    public void afficherLoisir() {
+    public ArrayList afficherLoisir() {
         TLieu elliste = this.liste;
-        System.out.println("liste des lieux de loisir :");
+        ArrayList loisirs = new ArrayList();
         while (elliste != null) {
             if (elliste.getType() == 'L') {
-                System.out.println(elliste.getNomLieu());
+                loisirs.add(elliste.getNomLieu());
             }
             elliste = elliste.getSuivant();
         }
+        return loisirs;
     }
 
     public void afficherDepartementales() {
