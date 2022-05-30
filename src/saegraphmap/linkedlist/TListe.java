@@ -200,7 +200,7 @@ public class TListe {
         TLieu elliste = this.liste;
         int nb = 0;
         while (elliste != null) {
-            TRoute ellisteroute = this.liste.getTetelisteroutes();
+            TRoute ellisteroute = elliste.getTetelisteroutes();
             while (ellisteroute != null) {
                 if (ellisteroute.getTypeRoute() == 'D') {
                     nb++;
@@ -216,7 +216,7 @@ public class TListe {
         TLieu elliste = this.liste;
         int nb = 0;
         while (elliste != null) {
-            TRoute ellisteroute = this.liste.getTetelisteroutes();
+            TRoute ellisteroute = elliste.getTetelisteroutes();
             while (ellisteroute != null) {
                 if (ellisteroute.getTypeRoute() == 'N') {
                     nb++;
@@ -232,7 +232,7 @@ public class TListe {
         TLieu elliste = this.liste;
         int nb = 0;
         while (elliste != null) {
-            TRoute ellisteroute = this.liste.getTetelisteroutes();
+            TRoute ellisteroute = elliste.getTetelisteroutes();
             while (ellisteroute != null) {
                 if (ellisteroute.getTypeRoute() == 'A') {
                     nb++;
@@ -343,34 +343,34 @@ public class TListe {
         return false;
     }
 
-    public void plusCulturelle(String lieu1, String lieu2) {
+    public String plusCulturelle(String lieu1, String lieu2) {
         int nblieu1;
         nblieu1 = deuxDistance(lieu1, 'L').size();
         int nblieu2;
         nblieu2 = deuxDistance(lieu2, 'L').size();
-        if (nblieu1 == nblieu2) System.out.println(lieu1 + " et " + lieu2 + " sont autant culturelles");
-        else if (nblieu1 > nblieu2) System.out.println(lieu1 + " est plus culturelle que " + lieu2);
-        else System.out.println(lieu1 + " est moins culturelle que " + lieu2);
+        if (nblieu1 == nblieu2) return(lieu1 + " et " + lieu2 + " sont autant culturelles");
+        else if (nblieu1 > nblieu2) return(lieu1 + " est plus culturelle que " + lieu2);
+        else return(lieu1 + " est moins culturelle que " + lieu2);
     }
 
-    public void plusOuverte(String lieu1, String lieu2) {
+    public String plusOuverte(String lieu1, String lieu2) {
         int nblieu1;
         nblieu1 = deuxDistance(lieu1).size();
         int nblieu2;
         nblieu2 = deuxDistance(lieu2).size();
-        if (nblieu1 == nblieu2) System.out.println(lieu1 + " et " + lieu2 + " sont autant ouvertes");
-        else if (nblieu1 > nblieu2) System.out.println(lieu1 + " est plus ouvertes que " + lieu2);
-        else System.out.println(lieu1 + " est moins ouvertes que " + lieu2);
+        if (nblieu1 == nblieu2) return(lieu1 + " et " + lieu2 + " sont autant ouvertes");
+        else if (nblieu1 > nblieu2) return(lieu1 + " est plus ouvertes que " + lieu2);
+        else return(lieu1 + " est moins ouvertes que " + lieu2);
     }
 
-    public void plusGastronomique(String lieu1, String lieu2) {
+    public String plusGastronomique(String lieu1, String lieu2) {
         int nblieu1;
         nblieu1 = deuxDistance(lieu1, 'R').size();
         int nblieu2;
         nblieu2 = deuxDistance(lieu2, 'R').size();
-        if (nblieu1 == nblieu2) System.out.println(lieu1 + " et " + lieu2 + " sont autant gastronomiques");
-        else if (nblieu1 > nblieu2) System.out.println(lieu1 + " est plus gastronomiques que " + lieu2);
-        else System.out.println(lieu1 + " est moins gastronomiques que " + lieu2);
+        if (nblieu1 == nblieu2) return(lieu1 + " et " + lieu2 + " sont autant gastronomiques");
+        else if (nblieu1 > nblieu2) return(lieu1 + " est plus gastronomiques que " + lieu2);
+        else return(lieu1 + " est moins gastronomiques que " + lieu2);
     }
 
     public void ajoutLieu(TLieu lieuAjoute) {
