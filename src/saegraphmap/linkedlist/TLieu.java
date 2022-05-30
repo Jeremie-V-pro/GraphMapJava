@@ -5,7 +5,7 @@ import saegraphmap.window.RoundJToggleButton;
 import java.util.Objects;
 
 public class TLieu {
-    private String nomLieu;
+    public String nomLieu;
     private char type; //V (ville), R (restaurant) ou L (lieu de loisir)
     private TLieu suivant;
     private TRoute tetelisteroutes;
