@@ -9,9 +9,7 @@ import saegraphmap.linkedlist.TListe;
 import saegraphmap.linkedlist.TRoute;
 import saegraphmap.window.listener.GraphPanelListener;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -128,8 +126,7 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
             lieu.setY(lieu.getY() - minY + 50 );
             lieu = lieu.getSuivant();
         }
-        if(maxX - minX > this.getWidth()) this.setSize((int) (maxX-minX+50), this.getHeight());
-        if(maxY - minY > this.getHeight()) this.setSize(this.getWidth(), (int) (maxY-minY+50));
+        this.setPreferredSize(new Dimension((int) (maxX-minX+100), (int) (maxY-minY+100)));
     }
 
     private double forceRep(TLieu lieu1, TLieu lieu2){
@@ -209,7 +206,6 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                         g2d.setColor(Color.BLACK);
                         g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getTaillePts()+4,lieu.getrJTogBtn().getTaillePts()+4);
                     }
-                    System.out.println(lieu.getrJTogBtn().getCouleurPts().toString());
                     g2d.setColor(lieu.getrJTogBtn().getCouleurPts());
                     g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2  ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 ,lieu.getrJTogBtn().getTaillePts(),lieu.getrJTogBtn().getTaillePts());
                     lieu = lieu.getSuivant();
