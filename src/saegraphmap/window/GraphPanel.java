@@ -10,6 +10,7 @@ import saegraphmap.linkedlist.TRoute;
 import saegraphmap.window.listener.GraphPanelListener;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -175,12 +176,9 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.white);
         g2d.fillRect(0,0,this.getWidth(),this.getHeight());
-        TRoute route;
         if(listPts!=null){
-            TLieu lieu = listPts.getListe();
-            while (lieu != null){
-                route = lieu.getTetelisteroutes();
-                while (route != null){
+            for(TLieu lieu = listPts.getListe(); lieu != null; lieu =lieu.getSuivant()){
+                for(TRoute route = lieu.getTetelisteroutes(); route != null; route = route.getSuivant()){
                     if(route.getTypeRoute() == 'A' && afficheAutoroute && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()) {
                         g2d.setColor(Color.blue);
                         g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
@@ -193,22 +191,21 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                         g2d.setColor(Color.green);
                         g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
                     }
-
-                    route = route.getSuivant();
                 }
-                lieu = lieu.getSuivant();
             }
-            lieu = listPts.getListe();
 
-            while (lieu != null){
+            for(TLieu lieu = listPts.getListe(); lieu != null; lieu = lieu.getSuivant()){
                 if(lieu.getrJTogBtn().isVisible()){
-                    if(lieu.getrJTogBtn().isSelected()){
+                    if(lieu.getrJTogBtn().isSelected() == 1){
                         g2d.setColor(Color.BLACK);
+                        g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getTaillePts()+4,lieu.getrJTogBtn().getTaillePts()+4);
+                    }
+                    if(lieu.getrJTogBtn().isSelected() == 2){
+                        g2d.setColor(new Color(94, 3, 252));
                         g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 -2 ,lieu.getrJTogBtn().getTaillePts()+4,lieu.getrJTogBtn().getTaillePts()+4);
                     }
                     g2d.setColor(lieu.getrJTogBtn().getCouleurPts());
                     g2d.fillOval(lieu.getrJTogBtn().getX() - lieu.getrJTogBtn().getTaillePts()/2  ,lieu.getrJTogBtn().getY() -lieu.getrJTogBtn().getTaillePts()/2 ,lieu.getrJTogBtn().getTaillePts(),lieu.getrJTogBtn().getTaillePts());
-                    lieu = lieu.getSuivant();
                 }
             }
         }
@@ -242,17 +239,39 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         TLieu lieuChangeEtatBtn = listPts.getListe();
         while (lieu != null){
             if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
-                lieu.getrJTogBtn().setEtatBtn(!lieu.getrJTogBtn().isSelected());
-                while (lieuChangeEtatBtn != null){
-                    if(!lieuChangeEtatBtn.equals(lieu)) lieuChangeEtatBtn.getrJTogBtn().setEtatBtn(false);
+
+                if(mouseEvent.isShiftDown()){
+                    if(lieu.getrJTogBtn().isSelected() != 2) lieu.getrJTogBtn().setEtatBtn(2);
+                    else lieu.getrJTogBtn().setEtatBtn(0);
+                    while (lieuChangeEtatBtn != null){
+                        if(!(lieuChangeEtatBtn.equals(lieu) || lieuChangeEtatBtn.getrJTogBtn().isSelected() == 1)) lieuChangeEtatBtn.getrJTogBtn().setEtatBtn(0);
+                        lieuChangeEtatBtn = lieuChangeEtatBtn.getSuivant();
+                    }
+                }
+                else {
+                    if(lieu.getrJTogBtn().isSelected() != 1) lieu.getrJTogBtn().setEtatBtn(1);
+                    else lieu.getrJTogBtn().setEtatBtn(0);
+                    while (lieuChangeEtatBtn != null){
+                        if(!(lieuChangeEtatBtn.equals(lieu) || lieuChangeEtatBtn.getrJTogBtn().isSelected() == 2)) lieuChangeEtatBtn.getrJTogBtn().setEtatBtn(0);
+                        lieuChangeEtatBtn = lieuChangeEtatBtn.getSuivant();
+                    }
+                }
+
+                this.repaint();
+                lieuChangeEtatBtn = listPts.getListe();
+                ArrayList<TLieu> lieuEvent = new ArrayList<TLieu>();
+                while (lieuChangeEtatBtn != null)
+                {
+                    if (lieuChangeEtatBtn.getrJTogBtn().isSelected() ==1){
+                        lieuEvent.add(0,lieuChangeEtatBtn);
+                    }
+                    else  if (lieuChangeEtatBtn.getrJTogBtn().isSelected() == 2){
+                        lieuEvent.add(lieuChangeEtatBtn);
+                    }
                     lieuChangeEtatBtn = lieuChangeEtatBtn.getSuivant();
                 }
-                this.repaint();
                 for (GraphPanelListener listener : listeners) {
-                    if(lieu.getrJTogBtn().isSelected())
-                        listener.lieuSelectedChanged(lieu);
-                    else
-                        listener.lieuSelectedChanged(null);
+                    listener.lieuSelectedChanged(lieuEvent);
                 }
                 break;
             }

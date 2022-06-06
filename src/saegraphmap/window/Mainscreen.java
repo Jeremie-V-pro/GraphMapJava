@@ -11,6 +11,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import saegraphmap.linkedlist.TLieu;
 import saegraphmap.linkedlist.TListe;
+import saegraphmap.pathfinding.FloydWarshallMatrix;
 
 /**
  *
@@ -446,7 +447,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
             .addGroup(filterPanelLayout.createSequentialGroup()
                 .addGroup(filterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -786,6 +787,7 @@ public class Mainscreen extends javax.swing.JFrame {
             path = file.getAbsolutePath();
             fichier = new TListe(path);
             graphPanel1.ajoutListePts(fichier);
+            FloydWarshallMatrix test = new FloydWarshallMatrix(fichier);
             }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

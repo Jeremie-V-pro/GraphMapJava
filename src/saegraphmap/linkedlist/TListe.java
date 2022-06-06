@@ -63,18 +63,12 @@ public class TListe {
         return null;
     }
     
-    public ArrayList chercheRoutes(String lieu1, String lieu2) {
-        TLieu elliste = this.liste;
-        ArrayList routes = new ArrayList();
-        while (elliste != null) {
-            TRoute ellisteroute = this.liste.getTetelisteroutes();
-            while (ellisteroute != null) {
-                if ((ellisteroute.getLieuRejoint1().equals(lieu1) && ellisteroute.getLieuRejoint2().equals(lieu2)) || (ellisteroute.getLieuRejoint1().equals(lieu2) && ellisteroute.getLieuRejoint2().equals(lieu1))) {
-                    routes.add(ellisteroute.getTypeRoute() + " " + ellisteroute.getDistance());
-                }
-                ellisteroute = ellisteroute.getSuivant();
-            }
-            elliste = elliste.getSuivant();
+    public ArrayList<TRoute> chercheRoutes(String nomlieu1, String nomlieu2) {
+        TLieu lieu1 = chercheLieu(nomlieu1);
+        TLieu lieu2 = chercheLieu(nomlieu2);
+        ArrayList<TRoute> routes = new ArrayList<TRoute>();
+        for(TRoute route = lieu1.getTetelisteroutes(); route!=null ; route = route.getSuivant()){
+            if(route.getLieuRejoint2() == lieu2) routes.add(route);
         }
         return routes;
     }
@@ -261,19 +255,10 @@ public class TListe {
         }
     }
 
-    public void unDistance(String Lieu) {
-        TLieu elliste = this.liste;
-        while (elliste != null) {
-            if (elliste.getNomLieu().equals(Lieu)) {
-                TRoute ellisteroute = this.liste.getTetelisteroutes();
-                while (ellisteroute != null) {
-                    System.out.println(ellisteroute.getLieuRejoint2());
-                    ellisteroute = ellisteroute.getSuivant();
-                }
-                return;
-            }
-            elliste = elliste.getSuivant();
-        }
+
+    public boolean isUnDistance(TLieu lieu1, TLieu lieu2) {
+        ArrayList<TLieu> listUnDistance = lieu1.unDistance();
+        return listUnDistance.contains(lieu2);
     }
 
     public ArrayList deuxDistance(String Lieu, char typecherche) {
@@ -384,5 +369,7 @@ public class TListe {
             celluleLieu.setSuivant(lieuAjoute);
         }
     }
-
+    public int compterLieu(){
+        return compterLoisir() + compterRestaurants() + compterVilles();
+    }
 }

@@ -5,8 +5,9 @@ import java.awt.*;
 public class RoundJToggleButton {
    private int x,y;
    private int taillePts = 24;
+   private int etatBtn = 0;
    private Color couleurPts;
-   private boolean etatBtn = false, visible = true;
+   private boolean visible = true;
 
 
     public RoundJToggleButton(int x, int y, char typeVille) {
@@ -42,7 +43,7 @@ public class RoundJToggleButton {
         return couleurPts;
     }
 
-    public boolean isSelected() {
+    public int isSelected() {
         return etatBtn;
     }
 
@@ -67,7 +68,7 @@ public class RoundJToggleButton {
         this.couleurPts = couleurPts;
     }
 
-    public void setEtatBtn(boolean etatBtn) {
+    public void setEtatBtn(int etatBtn) {
         this.etatBtn = etatBtn;
     }
 }

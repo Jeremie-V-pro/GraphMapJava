@@ -2,6 +2,7 @@ package saegraphmap.linkedlist;
 
 import saegraphmap.window.RoundJToggleButton;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class TLieu {
@@ -101,6 +102,14 @@ public class TLieu {
 
     public void setTetelisteroutes(TRoute tetelisteroutes) {
         this.tetelisteroutes = tetelisteroutes;
+    }
+
+    public ArrayList<TLieu> unDistance() {
+        ArrayList<TLieu> listUnDistance = new ArrayList<TLieu>();
+        for(TRoute route = this.getTetelisteroutes(); route != null; route= route.getSuivant()){
+            listUnDistance.add(route.getLieuRejoint2());
+        }
+        return listUnDistance;
     }
 
     public void ajoutRoute(TRoute routeAjoute){
