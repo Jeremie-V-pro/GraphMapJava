@@ -6,9 +6,9 @@ import saegraphmap.linkedlist.TRoute;
 import java.util.ArrayList;
 
 public class Vertex {
-    private ArrayList<TRoute> listRoute;
+    private final ArrayList<TRoute> listRoute;
 
-    private TLieu depart;
+    private final TLieu depart;
     private float distance;
 
     private int nextVertexIndex;

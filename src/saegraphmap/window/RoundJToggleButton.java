@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class RoundJToggleButton {
    private int x,y;
-   private int taillePts = 24;
+   private final int taillePts = 24;
    private int etatBtn = 0;
    private Color couleurPts;
    private boolean visible = true;
@@ -53,19 +53,6 @@ public class RoundJToggleButton {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public void setCoordonate(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-
-    public void setTaillePts(int taillePts) {
-        this.taillePts = taillePts;
-    }
-
-    public void setCouleurPts(Color couleurPts) {
-        this.couleurPts = couleurPts;
     }
 
     public void setEtatBtn(int etatBtn) {

@@ -5,23 +5,22 @@ import saegraphmap.linkedlist.TListe;
 import saegraphmap.linkedlist.TRoute;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FloydWarshallMatrix {
-    private ArrayList<ArrayList<Vertex>> matrix = new ArrayList<>();
+    private final ArrayList<ArrayList<Vertex>> matrix = new ArrayList<>();
     private final float INFINITE = Float.MAX_VALUE;
 
-    private int size;
+    private final int size;
 
     public FloydWarshallMatrix(TListe liste){
         size = liste.compterLieu();
         float longueur = INFINITE;
         for(int i = 0; i <size ; i++){
-            matrix.add(new ArrayList<Vertex>(size));
+            matrix.add(new ArrayList<>(size));
             System.out.println(i);
         }
         int i = 0;
-        int j = 0;
+        int j;
         for(TLieu lieu1 = liste.getListe(); lieu1 != null; lieu1= lieu1.getSuivant()){
             j = 0;
             ArrayList<TRoute>listeRoute;
@@ -64,15 +63,22 @@ public class FloydWarshallMatrix {
             for ( j = 0 ; j<size ; j++){
                 System.out.print(matrix.get(i).get(j).getDistance()+"|");
             }
-            System.out.println("");
+            System.out.println();
         }
-
-
     }
 
-    public ArrayList<TRoute> findWay(TLieu lieu1, TLieu lieu2){
-        ArrayList<TRoute> chemin = new ArrayList<TRoute>();
+    public float findWay(TLieu lieu1, TLieu lieu2){
+        float distance = 0;
         int i, j;
+        for(i = 0; i<size ;i++){
+            for(j = 0; j<size ;j++){
+
+                for (TRoute route : matrix.get(i).get(i).getListRoute()) {
+                    route.setRoutePluscourChemin(false);
+                }
+            }
+
+        }
         for(i = 0; i<size ;i++)
         {
             if(matrix.get(i).get(i).getDepart() == lieu2) break;
@@ -81,11 +87,14 @@ public class FloydWarshallMatrix {
         {
             if(matrix.get(i).get(j).getDepart() == lieu1) break;
         }
-        if(matrix.get(i).get(j).getDistance() == INFINITE) return null;
+        if(matrix.get(i).get(j).getDistance() == INFINITE) return -1;
         while (matrix.get(i).get(j).getDepart() != lieu2){
-            chemin.addAll(matrix.get(i).get(j).getListRoute());
+            for (TRoute route:matrix.get(i).get(j).getListRoute()) {
+                route.setRoutePluscourChemin(true);
+            }
+            distance += matrix.get(i).get(j).getDistance();
             j = matrix.get(i).get(j).getNextVertexIndex();
         }
-        return chemin;
+        return distance;
     }
 }

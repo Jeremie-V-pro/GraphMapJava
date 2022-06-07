@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class TLieu {
     public String nomLieu;
-    private char type; //V (ville), R (restaurant) ou L (lieu de loisir)
+    private final char type; //V (ville), R (restaurant) ou L (lieu de loisir)
     private TLieu suivant;
     private TRoute tetelisteroutes;
 
@@ -21,8 +21,8 @@ public class TLieu {
         this.nomLieu = nomLieu;
         this.type = type;
         this.tetelisteroutes = tetelisteroutes;
-        this.x = (int) Math.floor(Math.random()*(1000-0+1)+0);
-        this.y = (int) Math.floor(Math.random()*(1000-0+1)+0);
+        this.x = (int) Math.floor(Math.random()*(1000+1)+0);
+        this.y = (int) Math.floor(Math.random()*(1000+1)+0);
         this.rJTogBtn= new RoundJToggleButton((int)this.x, (int)this.y, this.type);
     }
 
@@ -47,14 +47,6 @@ public class TLieu {
 
     public TRoute getTetelisteroutes() {
         return tetelisteroutes;
-    }
-
-     public void setNomLieu(String nomLieu) {
-        this.nomLieu = nomLieu;
-    }
-
-    public void setType(char type) {
-        this.type = type;
     }
 
     public void setSuivant(TLieu suivant) {
@@ -100,12 +92,8 @@ public class TLieu {
         this.fy = fyt;
     }
 
-    public void setTetelisteroutes(TRoute tetelisteroutes) {
-        this.tetelisteroutes = tetelisteroutes;
-    }
-
     public ArrayList<TLieu> unDistance() {
-        ArrayList<TLieu> listUnDistance = new ArrayList<TLieu>();
+        ArrayList<TLieu> listUnDistance = new ArrayList<>();
         for(TRoute route = this.getTetelisteroutes(); route != null; route= route.getSuivant()){
             listUnDistance.add(route.getLieuRejoint2());
         }
@@ -129,8 +117,7 @@ public class TLieu {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TLieu)) return false;
-        TLieu tlieu = (TLieu) o;
+        if (!(o instanceof TLieu tlieu)) return false;
         return type == tlieu.type && Objects.equals(nomLieu, tlieu.nomLieu);
     }
 

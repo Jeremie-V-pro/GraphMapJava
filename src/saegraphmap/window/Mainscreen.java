@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import saegraphmap.linkedlist.TLieu;
 import saegraphmap.linkedlist.TListe;
 import saegraphmap.pathfinding.FloydWarshallMatrix;
+import saegraphmap.window.listener.GraphPanelListener;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Mainscreen extends javax.swing.JFrame {
      */
     public Mainscreen() {
         initComponents();
+        this.graphPanel1.addGraphPanelListener(new GraphListener());
     }
     TListe fichier = null;
     TLieu lieuselection = new TLieu();
@@ -1074,4 +1076,12 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.JPanel pointDataPanel;
     private javax.swing.JPanel pointOptionPanel;
     // End of variables declaration//GEN-END:variables
+
+    class GraphListener implements GraphPanelListener{
+
+        @Override
+        public void lieuSelectedChanged(ArrayList<TLieu> lieuEvent) {
+
+        }
+    }
 }

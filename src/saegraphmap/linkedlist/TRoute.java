@@ -5,11 +5,13 @@ package saegraphmap.linkedlist;
  * @author p2105876
  */
 public class TRoute {
-    private int distance;
-    private char typeRoute;//N (nationnale), D (departementale) ou A (autoroute)
-    private TLieu lieuRejoint1;
-    private TLieu lieuRejoint2;
+    private final int distance;
+    private final char typeRoute;//N (nationnale), D (departementale) ou A (autoroute)
+    private final TLieu lieuRejoint1;
+    private final TLieu lieuRejoint2;
     private TRoute suivant;
+
+    private boolean routePluscourChemin = false;
 
     public TRoute(int distance, char typeRoute, TLieu lieuRejoint1, TLieu lieuRejoint2) {
         this.distance = distance;
@@ -38,24 +40,16 @@ public class TRoute {
         return suivant;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
-    public void setTypeRoute(char typeRoute) {
-        this.typeRoute = typeRoute;
-    }
-
-    public void setLieuRejoint1(TLieu lieuRejoint1) {
-        this.lieuRejoint1 = lieuRejoint1;
-    }
-
-    public void setLieuRejoint2(TLieu lieuRejoint2) {
-        this.lieuRejoint2 = lieuRejoint2;
-    }
-
     public void setSuivant(TRoute suivant) {
         this.suivant = suivant;
+    }
+
+    public boolean isRoutePluscourChemin() {
+        return routePluscourChemin;
+    }
+
+    public void setRoutePluscourChemin(boolean routePluscourChemin) {
+        this.routePluscourChemin = routePluscourChemin;
     }
 
     @Override

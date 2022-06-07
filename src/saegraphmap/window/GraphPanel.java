@@ -10,7 +10,6 @@ import saegraphmap.linkedlist.TRoute;
 import saegraphmap.window.listener.GraphPanelListener;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -238,7 +237,7 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         TLieu lieu = listPts.getListe();
         TLieu lieuChangeEtatBtn = listPts.getListe();
         while (lieu != null){
-            if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
+            if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < (float) lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
 
                 if(mouseEvent.isShiftDown()){
                     if(lieu.getrJTogBtn().isSelected() != 2) lieu.getrJTogBtn().setEtatBtn(2);
@@ -259,13 +258,10 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
 
                 this.repaint();
                 lieuChangeEtatBtn = listPts.getListe();
-                ArrayList<TLieu> lieuEvent = new ArrayList<TLieu>();
+                ArrayList<TLieu> lieuEvent = new ArrayList<>();
                 while (lieuChangeEtatBtn != null)
                 {
-                    if (lieuChangeEtatBtn.getrJTogBtn().isSelected() ==1){
-                        lieuEvent.add(0,lieuChangeEtatBtn);
-                    }
-                    else  if (lieuChangeEtatBtn.getrJTogBtn().isSelected() == 2){
+                    if (lieuChangeEtatBtn.getrJTogBtn().isSelected() ==1 || lieuChangeEtatBtn.getrJTogBtn().isSelected() == 2){
                         lieuEvent.add(lieuChangeEtatBtn);
                     }
                     lieuChangeEtatBtn = lieuChangeEtatBtn.getSuivant();
@@ -309,7 +305,7 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         if(listPts!=null){
             TLieu lieu = listPts.getListe();
             while (lieu != null){
-                if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
+                if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < (float) lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
                     this.setToolTipText(lieu.getNomLieu());
                     return;
                 }
@@ -330,4 +326,5 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
     private boolean afficheDepartemental = true;
     
     private List<GraphPanelListener> listeners = new ArrayList<>();
+
 }
