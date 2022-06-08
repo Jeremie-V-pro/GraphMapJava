@@ -259,7 +259,7 @@ public class Mainscreen extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 104, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -351,26 +351,26 @@ public class Mainscreen extends javax.swing.JFrame {
         pointDataPanelLayout.setVerticalGroup(
             pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel32)
+                .addComponent(jLabel33)
+                .addComponent(jLabel34)
+                .addComponent(jLabel35)
+                .addComponent(jLabel2)
+                .addComponent(jLabel3)
+                .addComponent(jLabel4))
+            .addGroup(pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel11)
                 .addComponent(jLabel13)
                 .addComponent(jLabel12)
                 .addComponent(jLabel14)
-                .addComponent(jLabel1)
-                .addGroup(pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel32)
-                    .addComponent(jLabel33)
-                    .addComponent(jLabel34)
-                    .addComponent(jLabel35)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)))
+                .addComponent(jLabel1))
         );
 
         getContentPane().add(pointDataPanel, java.awt.BorderLayout.PAGE_END);
 
         jMenu1.setText("Fichier");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Ouvrir un CSV");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,6 +469,7 @@ public class Mainscreen extends javax.swing.JFrame {
             path = file.getAbsolutePath();
             fichier = new TListe(path);
             graphPanel1.ajoutListePts(fichier);
+            jScrollGraphpane.revalidate();
             Integer nombre = fichier.compterVilles() + fichier.compterRestaurants() + fichier.compterLoisir();      
             jLabel4.setText(nombre.toString());
             FloydWarshallMatrix test = new FloydWarshallMatrix(fichier);
@@ -555,17 +556,33 @@ public class Mainscreen extends javax.swing.JFrame {
         if(jComboBox8.getSelectedItem()=="Autoroutes") {
             Integer nombre = fichier.compterAutoroute();      
             jLabel29.setText(nombre.toString());
+            graphPanel1.setAfficheAutoroute(true);
+            graphPanel1.setAfficheDepartemental(false);
+            graphPanel1.setAfficheNationale(false);
+            graphPanel1.repaint();
         }
         if(jComboBox8.getSelectedItem()=="Nationales") {
             Integer nombre = fichier.compterNationales();      
             jLabel29.setText(nombre.toString());
+            graphPanel1.setAfficheAutoroute(false);
+            graphPanel1.setAfficheDepartemental(false);
+            graphPanel1.setAfficheNationale(true);
+            graphPanel1.repaint();
         }
         if(jComboBox8.getSelectedItem()=="Departementales") {
             Integer nombre = fichier.compterDepartementales();      
             jLabel29.setText(nombre.toString());
+            graphPanel1.setAfficheAutoroute(false);
+            graphPanel1.setAfficheDepartemental(true);
+            graphPanel1.setAfficheNationale(false);
+            graphPanel1.repaint();
         }
         if(jComboBox8.getSelectedItem()=="(Aucun)") {    
             jLabel29.setText("aucun type séléctionné");
+            graphPanel1.setAfficheAutoroute(true);
+            graphPanel1.setAfficheDepartemental(true);
+            graphPanel1.setAfficheNationale(true);
+            graphPanel1.repaint();
         }
     }//GEN-LAST:event_jComboBox8ActionPerformed
 

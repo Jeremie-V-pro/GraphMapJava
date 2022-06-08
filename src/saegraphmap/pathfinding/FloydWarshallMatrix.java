@@ -56,15 +56,6 @@ public class FloydWarshallMatrix {
                 }
             }
         }
-
-
-
-        for ( i = 0 ; i<size ; i++){
-            for ( j = 0 ; j<size ; j++){
-                System.out.print(matrix.get(i).get(j).getDistance()+"|");
-            }
-            System.out.println();
-        }
     }
 
     public float findWay(TLieu lieu1, TLieu lieu2){
