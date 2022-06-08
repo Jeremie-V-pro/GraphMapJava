@@ -117,7 +117,8 @@ public class TLieu {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TLieu tlieu)) return false;
+        if (!(o instanceof TLieu)) return false;
+        TLieu tlieu = (TLieu) o;
         return type == tlieu.type && Objects.equals(nomLieu, tlieu.nomLieu);
     }
 
