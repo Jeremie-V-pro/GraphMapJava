@@ -38,7 +38,7 @@ public class TListe {
             System.out.println(ligne);
             for (String route : routes) {
                 char typeRoute = route.split("::")[0].split(",")[0].toCharArray()[0];
-                int longueurRoute = Integer.parseInt(route.split("::")[0].split(",")[1]);
+                float longueurRoute = Integer.parseInt(route.split("::")[0].split(",")[1]);
                 String destination = route.split("::")[1].split(",")[1];
                 celluleLieu.ajoutRoute(new TRoute(longueurRoute, typeRoute, celluleLieu, chercheLieu(destination)));
             }
