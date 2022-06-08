@@ -5,7 +5,7 @@ package saegraphmap.linkedlist;
  * @author p2105876
  */
 public class TRoute {
-    private final int distance;
+    private final float distance;
     private final char typeRoute;//N (nationnale), D (departementale) ou A (autoroute)
     private final TLieu lieuRejoint1;
     private final TLieu lieuRejoint2;
@@ -13,14 +13,14 @@ public class TRoute {
 
     private boolean routePluscourChemin = false;
 
-    public TRoute(int distance, char typeRoute, TLieu lieuRejoint1, TLieu lieuRejoint2) {
+    public TRoute(float distance, char typeRoute, TLieu lieuRejoint1, TLieu lieuRejoint2) {
         this.distance = distance;
         this.typeRoute = typeRoute;
         this.lieuRejoint1 = lieuRejoint1;
         this.lieuRejoint2 = lieuRejoint2;
     }
 
-    public int getDistance() {
+    public float getDistance() {
         return distance;
     }
 

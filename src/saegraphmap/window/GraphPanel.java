@@ -13,7 +13,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -178,7 +180,11 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         if(listPts!=null){
             for(TLieu lieu = listPts.getListe(); lieu != null; lieu =lieu.getSuivant()){
                 for(TRoute route = lieu.getTetelisteroutes(); route != null; route = route.getSuivant()){
-                    if(route.getTypeRoute() == 'A' && afficheAutoroute && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()) {
+                    if(route.isRoutePluscourChemin()){
+                        g2d.setColor(Color.magenta);
+                        g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
+                    }
+                    else if(route.getTypeRoute() == 'A' && afficheAutoroute && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()) {
                         g2d.setColor(Color.blue);
                         g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
                     }
@@ -236,9 +242,11 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
     public void mouseClicked(MouseEvent mouseEvent) {
         TLieu lieu = listPts.getListe();
         TLieu lieuChangeEtatBtn = listPts.getListe();
+        ArrayList<TLieu> lieuEvent = null;
+        boolean ptsSelected =false;
         while (lieu != null){
             if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < (float) lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
-
+                ptsSelected = true;
                 if(mouseEvent.isShiftDown()){
                     if(lieu.getrJTogBtn().isSelected() != 2) lieu.getrJTogBtn().setEtatBtn(2);
                     else lieu.getrJTogBtn().setEtatBtn(0);
@@ -258,20 +266,24 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
 
                 this.repaint();
                 lieuChangeEtatBtn = listPts.getListe();
-                ArrayList<TLieu> lieuEvent = new ArrayList<>();
+                lieuEvent = new ArrayList<>(Arrays.asList(null,null));
                 while (lieuChangeEtatBtn != null)
                 {
-                    if (lieuChangeEtatBtn.getrJTogBtn().isSelected() ==1 || lieuChangeEtatBtn.getrJTogBtn().isSelected() == 2){
-                        lieuEvent.add(lieuChangeEtatBtn);
+                    if (lieuChangeEtatBtn.getrJTogBtn().isSelected() == 1){
+                        lieuEvent.set(0,lieuChangeEtatBtn);
+                    } else if (lieuChangeEtatBtn.getrJTogBtn().isSelected() == 2) {
+                        lieuEvent.set(1,lieuChangeEtatBtn);
                     }
                     lieuChangeEtatBtn = lieuChangeEtatBtn.getSuivant();
-                }
-                for (GraphPanelListener listener : listeners) {
-                    listener.lieuSelectedChanged(lieuEvent);
                 }
                 break;
             }
             lieu = lieu.getSuivant();
+        }
+        if(ptsSelected) {
+            for (GraphPanelListener listener : listeners) {
+                listener.lieuSelectedChanged(lieuEvent);
+            }
         }
     }
 
