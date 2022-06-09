@@ -13,6 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import saegraphmap.linkedlist.TLieu;
 import saegraphmap.linkedlist.TListe;
+import saegraphmap.linkedlist.TRoute;
 import saegraphmap.pathfinding.FloydWarshallMatrix;
 import saegraphmap.window.listener.GraphPanelListener;
 
@@ -118,9 +119,9 @@ public class Mainscreen extends javax.swing.JFrame {
         jLabel25.setText("dans cette map est de:");
 
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(Aucun)", "Ville", "Restaurant", "Loisir" }));
-        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox7ActionPerformed(evt);
+        jComboBox7.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox7ItemStateChanged(evt);
             }
         });
 
@@ -343,7 +344,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addComponent(jLabel34)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel35)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -469,10 +470,10 @@ public class Mainscreen extends javax.swing.JFrame {
             path = file.getAbsolutePath();
             fichier = new TListe(path);
             graphPanel1.ajoutListePts(fichier);
-            jScrollGraphpane.revalidate();
+            jScrollGraphpane.setViewportView(graphPanel1);
             Integer nombre = fichier.compterVilles() + fichier.compterRestaurants() + fichier.compterLoisir();      
             jLabel4.setText(nombre.toString());
-            FloydWarshallMatrix test = new FloydWarshallMatrix(fichier);
+            matrix = new FloydWarshallMatrix(fichier);
             }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -534,24 +535,6 @@ public class Mainscreen extends javax.swing.JFrame {
         else jPanel2.setVisible(false);
     }//GEN-LAST:event_jCheckBoxMenuItem5ActionPerformed
 
-    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
-        if(jComboBox7.getSelectedItem()=="Ville") {
-            Integer nombre = fichier.compterVilles();      
-            jLabel26.setText(nombre.toString());
-        }
-        if(jComboBox7.getSelectedItem()=="Restaurant") {
-            Integer nombre = fichier.compterRestaurants();      
-            jLabel26.setText(nombre.toString());
-        }
-        if(jComboBox7.getSelectedItem()=="Loisir") {
-            Integer nombre = fichier.compterLoisir();      
-            jLabel26.setText(nombre.toString());
-        }
-        if(jComboBox7.getSelectedItem()=="(Aucun)") {    
-            jLabel26.setText("aucun type séléctionné");
-        }
-    }//GEN-LAST:event_jComboBox7ActionPerformed
-
     private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
         if(jComboBox8.getSelectedItem()=="Autoroutes") {
             Integer nombre = fichier.compterAutoroute();      
@@ -604,6 +587,32 @@ public class Mainscreen extends javax.swing.JFrame {
             jLabel6.setText("aucun lieu séléctionné");
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox7ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox7ItemStateChanged
+        if(jComboBox7.getSelectedItem()=="Ville") {
+            fichier.changeLieuVisibility('A',false);
+            fichier.changeLieuVisibility('V',true);
+            Integer nombre = fichier.compterVilles();      
+            jLabel26.setText(nombre.toString());
+        }
+        if(jComboBox7.getSelectedItem()=="Restaurant") {
+            Integer nombre = fichier.compterRestaurants();
+            fichier.changeLieuVisibility('A',false);
+            fichier.changeLieuVisibility('R',true);
+            jLabel26.setText(nombre.toString());
+        }
+        if(jComboBox7.getSelectedItem()=="Loisir") {
+            Integer nombre = fichier.compterLoisir();
+            fichier.changeLieuVisibility('A',false);
+            fichier.changeLieuVisibility('L',true);
+            jLabel26.setText(nombre.toString());
+        }
+        if(jComboBox7.getSelectedItem()=="(Aucun)") {
+            fichier.changeLieuVisibility('A',true);
+            jLabel26.setText("aucun type séléctionné");
+        }
+        graphPanel1.repaint();
+    }//GEN-LAST:event_jComboBox7ItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -700,6 +709,7 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.JPanel numberPanel;
     private javax.swing.JPanel pointDataPanel;
     // End of variables declaration//GEN-END:variables
+    private FloydWarshallMatrix matrix;
 
     class GraphListener implements GraphPanelListener{
 
@@ -735,6 +745,13 @@ public class Mainscreen extends javax.swing.JFrame {
                 jLabel14.setText(selection1.getNomLieu());
                 jLabel33.setText(Character.toString(selection2.getType()));
                 jLabel35.setText(selection2.getNomLieu());
+                for(TLieu l = fichier.getListe(); l !=null ; l = l.getSuivant()){
+                    for(TRoute r = l.getTetelisteroutes(); r !=null ; r = r.getSuivant()){
+                        r.setRoutePluscourChemin(false);
+                    }
+                }
+                matrix.findWay(selection1 , selection2);
+                graphPanel1.repaint();
             }
         }
     }

@@ -6,17 +6,17 @@ import saegraphmap.linkedlist.TRoute;
 import java.util.ArrayList;
 
 public class Vertex {
-    private final ArrayList<TRoute> listRoute;
+    private final ArrayList<TRoute> listRoute = null;
 
     private final TLieu depart;
     private float distance;
 
     private int nextVertexIndex;
 
-    Vertex(TLieu depart, ArrayList<TRoute> listRoute, float distance){
+    Vertex(TLieu depart, float distance, int nextVertexIndex){
         this.depart = depart;
-        this.listRoute = listRoute;
         this.distance = distance;
+        this.nextVertexIndex = nextVertexIndex;
     }
 
     public TLieu getDepart() {

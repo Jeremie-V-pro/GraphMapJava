@@ -369,6 +369,13 @@ public class TListe {
             celluleLieu.setSuivant(lieuAjoute);
         }
     }
+
+    public void changeLieuVisibility(char c, boolean visible){
+        for(TLieu lieu = this.getListe(); lieu != null ; lieu = lieu.getSuivant()){
+            if(lieu.getType() == c || c=='A' ) lieu.getrJTogBtn().setVisible(visible);
+        }
+    }
+
     public int compterLieu(){
         return compterLoisir() + compterRestaurants() + compterVilles();
     }
