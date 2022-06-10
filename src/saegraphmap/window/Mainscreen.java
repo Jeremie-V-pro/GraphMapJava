@@ -715,24 +715,23 @@ public class Mainscreen extends javax.swing.JFrame {
 
         @Override
         public void lieuSelectedChanged(ArrayList<TLieu> lieuEvent) {
-            
-            selection1 = lieuEvent.get(0);
-            selection2 = lieuEvent.get(1);
-            if (selection1 == null && selection2 == null){
+            if (lieuEvent.get(0) == null && lieuEvent.get(1) == null){
                 jComboBox1.setEnabled(false);
                 jLabel13.setText("");
                 jLabel14.setText("non selectionne");
                 jLabel33.setText("");
                 jLabel35.setText("non selectionne");
             }
-            if (selection1 == null && selection2 != null){
+            else if (lieuEvent.get(0) == null && lieuEvent.get(1) != null){
+                selection2 = lieuEvent.get(1);
                 jComboBox1.setEnabled(false);
                 jLabel13.setText("");
                 jLabel14.setText("non selectionne");
                 jLabel33.setText(Character.toString(selection2.getType()));
                 jLabel35.setText(selection2.getNomLieu());
             }
-            if (selection1 != null && selection2 == null){
+            else if (lieuEvent.get(0) != null && lieuEvent.get(1) == null){
+                selection1 = lieuEvent.get(0);
                 jComboBox1.setEnabled(false);
                 jLabel13.setText(Character.toString(selection1.getType()));
                 jLabel14.setText(selection1.getNomLieu());
@@ -740,6 +739,8 @@ public class Mainscreen extends javax.swing.JFrame {
                 jLabel35.setText("non selectionne");
             }
             else{
+                selection1 = lieuEvent.get(0);
+                selection2 = lieuEvent.get(1);
                 jComboBox1.setEnabled(true);
                 jLabel13.setText(Character.toString(selection1.getType()));
                 jLabel14.setText(selection1.getNomLieu());

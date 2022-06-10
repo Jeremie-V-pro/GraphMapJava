@@ -182,7 +182,9 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                 for(TRoute route = lieu.getTetelisteroutes(); route != null; route = route.getSuivant()){
                     if(route.isRoutePluscourChemin()){
                         g2d.setColor(Color.magenta);
+                        g2d.setStroke(new BasicStroke(3));
                         g2d.drawLine((int)route.getLieuRejoint1().getX(), (int)route.getLieuRejoint1().getY(), (int)route.getLieuRejoint2().getX(), (int)route.getLieuRejoint2().getY());
+                        g2d.setStroke(new BasicStroke(1));
                     }
                     else if(route.getTypeRoute() == 'A' && afficheAutoroute && route.getLieuRejoint1().getrJTogBtn().isVisible() && route.getLieuRejoint2().getrJTogBtn().isVisible()) {
                         g2d.setColor(Color.blue);

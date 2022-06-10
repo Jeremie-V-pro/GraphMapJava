@@ -64,11 +64,31 @@ public class TListe {
     }
     
     public ArrayList<TRoute> chercheRoutes(String nomlieu1, String nomlieu2) {
+        float distance = Float.MAX_VALUE;
         TLieu lieu1 = chercheLieu(nomlieu1);
         TLieu lieu2 = chercheLieu(nomlieu2);
         ArrayList<TRoute> routes = new ArrayList<TRoute>();
         for(TRoute route = lieu1.getTetelisteroutes(); route!=null ; route = route.getSuivant()){
-            if(route.getLieuRejoint2() == lieu2) routes.add(route);
+            if(route.getLieuRejoint2() == lieu2) {
+                if(route.getDistance() <  distance){
+                    routes.add(route);
+                    distance = route.getDistance();
+                }
+                else if(route.getDistance() ==  distance){
+                    routes.add(route);
+                }
+            }
+        }
+        for(TRoute route = lieu2.getTetelisteroutes(); route!=null ; route = route.getSuivant()){
+            if(route.getLieuRejoint2() == lieu1) {
+                if(route.getDistance() <  distance){
+                    routes.add(route);
+                    distance = route.getDistance();
+                }
+                else if(route.getDistance() ==  distance){
+                    routes.add(route);
+                }
+            }
         }
         return routes;
     }
