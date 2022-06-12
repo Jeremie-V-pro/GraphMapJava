@@ -5,9 +5,11 @@
  */
 package saegraphmap.window;
 
+import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -28,11 +30,15 @@ public class Mainscreen extends javax.swing.JFrame {
      */
     public Mainscreen() {
         initComponents();
+        ImageIcon img = new ImageIcon("src/saegraphmap/data/logo.png");
+        this.setIconImage(img.getImage());
         this.graphPanel1.addGraphPanelListener(new GraphListener());
+        cbDeuxDistance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbunDistanceActionPerformed(evt);
+            }
+        });
     }
-    TListe fichier = null;
-    TLieu selection1 = new TLieu();
-    TLieu selection2 = new TLieu();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,44 +55,48 @@ public class Mainscreen extends javax.swing.JFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         globalOptionPanel = new javax.swing.JPanel();
         numberPanel = new javax.swing.JPanel();
-        jSeparator4 = new javax.swing.JSeparator();
-        jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jComboBox7 = new javax.swing.JComboBox<>();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
-        jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
+        cbVille = new javax.swing.JCheckBox();
+        cbResto = new javax.swing.JCheckBox();
+        jLabel7 = new javax.swing.JLabel();
+        cbLoisir = new javax.swing.JCheckBox();
+        jSeparator1 = new javax.swing.JSeparator();
+        cbDépartemental = new javax.swing.JCheckBox();
+        cbAutoroute = new javax.swing.JCheckBox();
+        cbNational = new javax.swing.JCheckBox();
+        nbNoeud = new javax.swing.JLabel();
+        nbRoute = new javax.swing.JLabel();
         neighborListPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jPanel1 = new javax.swing.JPanel();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox8 = new javax.swing.JCheckBox();
-        jPanel3 = new javax.swing.JPanel();
+        neighborListPanel1 = new javax.swing.JPanel();
+        cbunDistance = new javax.swing.JCheckBox();
+        cbDeuxDistance = new javax.swing.JCheckBox();
+        neighborListPanel2 = new javax.swing.JPanel();
+        vcbville = new javax.swing.JCheckBox();
+        vCbResto = new javax.swing.JCheckBox();
+        vCbLoisir = new javax.swing.JCheckBox();
+        comparPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        is2Distancetxt = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         jScrollGraphpane = new javax.swing.JScrollPane();
         graphPanel1 = new saegraphmap.window.GraphPanel();
         pointDataPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -105,118 +115,183 @@ public class Mainscreen extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jEditorPane1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(970, 859));
 
         globalOptionPanel.setLayout(new java.awt.GridLayout(3, 0, 0, 10));
 
-        numberPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Nombres"));
-
-        jLabel22.setText("Lieux");
+        numberPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtres et nombre"));
+        numberPanel.setEnabled(false);
+        numberPanel.setMinimumSize(new java.awt.Dimension(0, 274));
 
         jLabel23.setText("Routes");
 
-        jLabel24.setText("le nombre de");
-
-        jLabel25.setText("dans cette map est de:");
-
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(Aucun)", "Ville", "Restaurant", "Loisir" }));
-        jComboBox7.addItemListener(new java.awt.event.ItemListener() {
+        cbVille.setSelected(true);
+        cbVille.setText("Ville");
+        cbVille.setEnabled(false);
+        cbVille.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox7ItemStateChanged(evt);
+                cbVilleItemStateChanged(evt);
             }
         });
 
-        jLabel26.setText("aucun type séléctionné");
+        cbResto.setSelected(true);
+        cbResto.setText("Restaurant");
+        cbResto.setEnabled(false);
+        cbResto.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbRestoItemStateChanged(evt);
+            }
+        });
 
-        jLabel27.setText("le nombre de");
+        jLabel7.setText("Noeud");
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(Aucun)", "Autoroutes", "Nationales", "Departementales" }));
-        jComboBox8.addActionListener(new java.awt.event.ActionListener() {
+        cbLoisir.setSelected(true);
+        cbLoisir.setText("Loisir");
+        cbLoisir.setEnabled(false);
+        cbLoisir.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbLoisirItemStateChanged(evt);
+            }
+        });
+        cbLoisir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox8ActionPerformed(evt);
+                cbLoisirActionPerformed(evt);
             }
         });
 
-        jLabel28.setText("dans cette map est de:");
+        cbDépartemental.setSelected(true);
+        cbDépartemental.setText("Départemental");
+        cbDépartemental.setEnabled(false);
+        cbDépartemental.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbDépartementalItemStateChanged(evt);
+            }
+        });
 
-        jLabel29.setText("aucun type séléctionné");
+        cbAutoroute.setSelected(true);
+        cbAutoroute.setText("Autoroute");
+        cbAutoroute.setEnabled(false);
+        cbAutoroute.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbAutorouteItemStateChanged(evt);
+            }
+        });
+
+        cbNational.setSelected(true);
+        cbNational.setText("National");
+        cbNational.setEnabled(false);
+        cbNational.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbNationalItemStateChanged(evt);
+            }
+        });
+
+        nbNoeud.setText("0");
+
+        nbRoute.setText("0");
 
         javax.swing.GroupLayout numberPanelLayout = new javax.swing.GroupLayout(numberPanel);
         numberPanel.setLayout(numberPanelLayout);
         numberPanelLayout.setHorizontalGroup(
             numberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator4)
-            .addGroup(numberPanelLayout.createSequentialGroup()
-                .addComponent(jLabel24)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox7, 0, 1, Short.MAX_VALUE))
             .addGroup(numberPanelLayout.createSequentialGroup()
                 .addGroup(numberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel22)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel23)
-                    .addComponent(jLabel25)
-                    .addComponent(jLabel26)
-                    .addComponent(jLabel28)
-                    .addComponent(jLabel29))
-                .addContainerGap(54, Short.MAX_VALUE))
-            .addGroup(numberPanelLayout.createSequentialGroup()
-                .addComponent(jLabel27)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox8, 0, 1, Short.MAX_VALUE))
+                    .addComponent(jLabel7)
+                    .addGroup(numberPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(numberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(numberPanelLayout.createSequentialGroup()
+                                .addGroup(numberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbAutoroute)
+                                    .addComponent(cbNational)
+                                    .addComponent(cbDépartemental)
+                                    .addComponent(cbVille)
+                                    .addComponent(cbResto))
+                                .addGap(0, 179, Short.MAX_VALUE))
+                            .addGroup(numberPanelLayout.createSequentialGroup()
+                                .addComponent(cbLoisir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(nbNoeud))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, numberPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(nbRoute)))
+                .addContainerGap())
         );
         numberPanelLayout.setVerticalGroup(
             numberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(numberPanelLayout.createSequentialGroup()
-                .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addGap(3, 3, 3)
+                .addComponent(cbVille)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbResto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(numberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel24)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbLoisir)
+                    .addComponent(nbNoeud))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel25)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel26)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(numberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel28)
+                .addComponent(cbAutoroute)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel29)
+                .addComponent(cbDépartemental)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbNational)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(nbRoute)
                 .addContainerGap())
         );
 
         globalOptionPanel.add(numberPanel);
 
         neighborListPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Voisins"));
+        neighborListPanel.setEnabled(false);
         neighborListPanel.setLayout(new java.awt.BorderLayout());
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "qsd", "qsd", "qsd", "qsd" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        neighborListPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbunDistance.setText("1-distance");
+        cbunDistance.setEnabled(false);
+        cbunDistance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbunDistanceActionPerformed(evt);
+            }
         });
-        jScrollPane2.setViewportView(jList1);
+        neighborListPanel1.add(cbunDistance);
 
-        neighborListPanel.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        cbDeuxDistance.setText("2-distance");
+        cbDeuxDistance.setEnabled(false);
+        neighborListPanel1.add(cbDeuxDistance);
 
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        neighborListPanel.add(neighborListPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jCheckBox7.setText("1 distance");
-        jPanel1.add(jCheckBox7);
+        neighborListPanel2.setLayout(new java.awt.GridLayout(3, 0));
 
-        jCheckBox8.setText("2 distance");
-        jPanel1.add(jCheckBox8);
+        vcbville.setSelected(true);
+        vcbville.setText("Voir que les villes");
+        vcbville.setEnabled(false);
+        neighborListPanel2.add(vcbville);
 
-        neighborListPanel.add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        vCbResto.setSelected(true);
+        vCbResto.setText("Voir que les retaurants");
+        vCbResto.setEnabled(false);
+        neighborListPanel2.add(vCbResto);
+
+        vCbLoisir.setSelected(true);
+        vCbLoisir.setText("Voir que les loisirs");
+        vCbLoisir.setEnabled(false);
+        neighborListPanel2.add(vCbLoisir);
+
+        neighborListPanel.add(neighborListPanel2, java.awt.BorderLayout.CENTER);
 
         globalOptionPanel.add(neighborListPanel);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Comparaisons"));
+        jPanel2.setEnabled(false);
 
         jLabel5.setText("caractere de la comparaison :");
 
@@ -234,7 +309,7 @@ public class Mainscreen extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jComboBox1, 0, 165, Short.MAX_VALUE)
+            .addComponent(jComboBox1, 0, 311, Short.MAX_VALUE)
             .addComponent(jLabel5)
             .addComponent(jLabel6)
         );
@@ -250,35 +325,26 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtres"));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 104, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout comparPanelLayout = new javax.swing.GroupLayout(comparPanel);
+        comparPanel.setLayout(comparPanelLayout);
+        comparPanelLayout.setHorizontalGroup(
+            comparPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(comparPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(is2Distancetxt)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        comparPanelLayout.setVerticalGroup(
+            comparPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(comparPanelLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(51, 51, 51)
+                .addComponent(is2Distancetxt)
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
-        globalOptionPanel.add(jPanel3);
+        globalOptionPanel.add(comparPanel);
 
         getContentPane().add(globalOptionPanel, java.awt.BorderLayout.LINE_START);
 
@@ -294,78 +360,58 @@ public class Mainscreen extends javax.swing.JFrame {
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
-        pointDataPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Informations"));
-
-        jLabel11.setText("type:");
-
-        jLabel12.setText("Nom lieu:");
-
-        jLabel13.setText("type");
-
-        jLabel14.setText("nom");
-
-        jLabel32.setText("type:");
-
-        jLabel33.setText("type");
-
-        jLabel34.setText("Nom lieu:");
-
-        jLabel35.setText("nom");
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 0);
+        flowLayout1.setAlignOnBaseline(true);
+        pointDataPanel.setLayout(flowLayout1);
 
         jLabel1.setText("Lieu séléctionné 1 (click)");
+        pointDataPanel.add(jLabel1);
+
+        jLabel11.setText("type:");
+        pointDataPanel.add(jLabel11);
+
+        jLabel13.setText("type");
+        pointDataPanel.add(jLabel13);
+
+        jLabel12.setText("Nom lieu:");
+        pointDataPanel.add(jLabel12);
+
+        jLabel14.setText("nom");
+        pointDataPanel.add(jLabel14);
+
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator2.setMinimumSize(new java.awt.Dimension(2, 17));
+        jSeparator2.setName(""); // NOI18N
+        jSeparator2.setPreferredSize(new java.awt.Dimension(2, 17));
+        pointDataPanel.add(jSeparator2);
 
         jLabel2.setText("Lieu séléctionné 2 (shift + click)");
+        pointDataPanel.add(jLabel2);
+
+        jLabel32.setText("type:");
+        pointDataPanel.add(jLabel32);
+
+        jLabel33.setText("type");
+        pointDataPanel.add(jLabel33);
+
+        jLabel34.setText("Nom lieu:");
+        pointDataPanel.add(jLabel34);
+
+        jLabel35.setText("nom");
+        pointDataPanel.add(jLabel35);
 
         jLabel3.setText("nombre de lieux:");
+        pointDataPanel.add(jLabel3);
 
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator3.setMinimumSize(new java.awt.Dimension(2, 17));
+        jSeparator3.setName(""); // NOI18N
+        jSeparator3.setPreferredSize(new java.awt.Dimension(2, 17));
+        pointDataPanel.add(jSeparator3);
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("0");
-
-        javax.swing.GroupLayout pointDataPanelLayout = new javax.swing.GroupLayout(pointDataPanel);
-        pointDataPanel.setLayout(pointDataPanelLayout);
-        pointDataPanelLayout.setHorizontalGroup(
-            pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pointDataPanelLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel13)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel14)
-                .addGap(61, 61, 61)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel32)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel33)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel34)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel35)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        pointDataPanelLayout.setVerticalGroup(
-            pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel32)
-                .addComponent(jLabel33)
-                .addComponent(jLabel34)
-                .addComponent(jLabel35)
-                .addComponent(jLabel2)
-                .addComponent(jLabel3)
-                .addComponent(jLabel4))
-            .addGroup(pointDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel11)
-                .addComponent(jLabel13)
-                .addComponent(jLabel12)
-                .addComponent(jLabel14)
-                .addComponent(jLabel1))
-        );
+        pointDataPanel.add(jLabel4);
 
         getContentPane().add(pointDataPanel, java.awt.BorderLayout.PAGE_END);
 
@@ -458,25 +504,6 @@ public class Mainscreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        final JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setMultiSelectionEnabled(false);
-        fc.setFileFilter(new FileNameExtensionFilter("CSV file", "csv"));
-        int returnVal = fc.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String path = new String();
-            path = file.getAbsolutePath();
-            fichier = new TListe(path);
-            graphPanel1.ajoutListePts(fichier);
-            jScrollGraphpane.setViewportView(graphPanel1);
-            Integer nombre = fichier.compterVilles() + fichier.compterRestaurants() + fichier.compterLoisir();      
-            jLabel4.setText(nombre.toString());
-            matrix = new FloydWarshallMatrix(fichier);
-            }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         pointDataPanel.setVisible(true);
         neighborListPanel.setVisible(true);
@@ -535,84 +562,123 @@ public class Mainscreen extends javax.swing.JFrame {
         else jPanel2.setVisible(false);
     }//GEN-LAST:event_jCheckBoxMenuItem5ActionPerformed
 
-    private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
-        if(jComboBox8.getSelectedItem()=="Autoroutes") {
-            Integer nombre = fichier.compterAutoroute();      
-            jLabel29.setText(nombre.toString());
-            graphPanel1.setAfficheAutoroute(true);
-            graphPanel1.setAfficheDepartemental(false);
-            graphPanel1.setAfficheNationale(false);
-            graphPanel1.repaint();
-        }
-        if(jComboBox8.getSelectedItem()=="Nationales") {
-            Integer nombre = fichier.compterNationales();      
-            jLabel29.setText(nombre.toString());
-            graphPanel1.setAfficheAutoroute(false);
-            graphPanel1.setAfficheDepartemental(false);
-            graphPanel1.setAfficheNationale(true);
-            graphPanel1.repaint();
-        }
-        if(jComboBox8.getSelectedItem()=="Departementales") {
-            Integer nombre = fichier.compterDepartementales();      
-            jLabel29.setText(nombre.toString());
-            graphPanel1.setAfficheAutoroute(false);
-            graphPanel1.setAfficheDepartemental(true);
-            graphPanel1.setAfficheNationale(false);
-            graphPanel1.repaint();
-        }
-        if(jComboBox8.getSelectedItem()=="(Aucun)") {    
-            jLabel29.setText("aucun type séléctionné");
-            graphPanel1.setAfficheAutoroute(true);
-            graphPanel1.setAfficheDepartemental(true);
-            graphPanel1.setAfficheNationale(true);
-            graphPanel1.repaint();
-        }
-    }//GEN-LAST:event_jComboBox8ActionPerformed
-
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        if(jComboBox1.getSelectedItem()=="Ouverture") {    
-            jLabel6.setText(fichier.plusOuverte(selection1.nomLieu,selection2.nomLieu));
-        }
-        if(jComboBox1.getSelectedItem()=="Gastronomie") {    
-            jLabel6.setText(fichier.plusGastronomique(selection1.nomLieu,selection2.nomLieu));
-        }
-        if(jComboBox1.getSelectedItem()=="Culture") {   
-            jLabel6.setText(fichier.plusCulturelle(selection1.nomLieu,selection2.nomLieu));
-        }
-        if(jComboBox1.getSelectedItem()=="(Aucun)") {    
-            jLabel6.setText("aucun lieu séléctionné");
-        }
+        comparaison();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jComboBox7ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox7ItemStateChanged
-        if(jComboBox7.getSelectedItem()=="Ville") {
-            fichier.changeLieuVisibility('A',false);
+    private void cbVilleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbVilleItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED){
             fichier.changeLieuVisibility('V',true);
-            Integer nombre = fichier.compterVilles();      
-            jLabel26.setText(nombre.toString());
+            System.out.println("1");
+            nbNoeud.setText(Integer.toString(Integer.parseInt(nbNoeud.getText()) + fichier.compterVilles()));
         }
-        if(jComboBox7.getSelectedItem()=="Restaurant") {
-            Integer nombre = fichier.compterRestaurants();
-            fichier.changeLieuVisibility('A',false);
-            fichier.changeLieuVisibility('R',true);
-            jLabel26.setText(nombre.toString());
-        }
-        if(jComboBox7.getSelectedItem()=="Loisir") {
-            Integer nombre = fichier.compterLoisir();
-            fichier.changeLieuVisibility('A',false);
-            fichier.changeLieuVisibility('L',true);
-            jLabel26.setText(nombre.toString());
-        }
-        if(jComboBox7.getSelectedItem()=="(Aucun)") {
-            fichier.changeLieuVisibility('A',true);
-            jLabel26.setText("aucun type séléctionné");
+        else{
+            fichier.changeLieuVisibility('V',false);
+            System.out.println("2");
+            nbNoeud.setText(Integer.toString(Integer.parseInt(nbNoeud.getText()) - fichier.compterVilles()));
         }
         graphPanel1.repaint();
-    }//GEN-LAST:event_jComboBox7ItemStateChanged
+    }//GEN-LAST:event_cbVilleItemStateChanged
+
+    private void cbRestoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRestoItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            fichier.changeLieuVisibility('R',true);
+            nbNoeud.setText(Integer.toString(Integer.parseInt(nbNoeud.getText()) + fichier.compterRestaurants()));
+        }
+        else{
+            fichier.changeLieuVisibility('R',false);
+            nbNoeud.setText(Integer.toString(Integer.parseInt(nbNoeud.getText()) - fichier.compterRestaurants()));
+        }
+        graphPanel1.repaint();
+    }//GEN-LAST:event_cbRestoItemStateChanged
+
+    private void cbLoisirItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbLoisirItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            fichier.changeLieuVisibility('L',true);
+            nbNoeud.setText(Integer.toString(Integer.parseInt(nbNoeud.getText()) - fichier.compterLoisir()));
+        }
+        else{
+            fichier.changeLieuVisibility('L',false);
+            nbNoeud.setText(Integer.toString(Integer.parseInt(nbNoeud.getText()) - fichier.compterLoisir()));
+        }
+        graphPanel1.repaint();
+    }//GEN-LAST:event_cbLoisirItemStateChanged
+
+    private void cbDépartementalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbDépartementalItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            graphPanel1.setAfficheDepartemental(true);;
+            nbRoute.setText(Integer.toString(Integer.parseInt(nbRoute.getText()) + fichier.compterDepartementales()));
+        }
+        else{
+            graphPanel1.setAfficheDepartemental(false);
+            nbRoute.setText(Integer.toString(Integer.parseInt(nbRoute.getText()) - fichier.compterDepartementales()));
+        }
+        graphPanel1.repaint();
+    }//GEN-LAST:event_cbDépartementalItemStateChanged
+
+    private void cbAutorouteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbAutorouteItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            graphPanel1.setAfficheAutoroute(true);
+            nbRoute.setText(Integer.toString(Integer.parseInt(nbRoute.getText()) + fichier.compterAutoroute()));
+        }
+        else{
+            graphPanel1.setAfficheAutoroute(false);
+            nbRoute.setText(Integer.toString(Integer.parseInt(nbRoute.getText()) - fichier.compterAutoroute()));
+        }
+        graphPanel1.repaint();
+    }//GEN-LAST:event_cbAutorouteItemStateChanged
+
+    private void cbNationalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbNationalItemStateChanged
+    if(evt.getStateChange() == ItemEvent.SELECTED){
+            graphPanel1.setAfficheNationale(true);
+            nbRoute.setText(Integer.toString(Integer.parseInt(nbRoute.getText()) + fichier.compterNationales()));
+        }
+        else{
+            graphPanel1.setAfficheNationale(false);
+            nbRoute.setText(Integer.toString(Integer.parseInt(nbRoute.getText()) - fichier.compterNationales()));
+        }
+        graphPanel1.repaint();
+    }//GEN-LAST:event_cbNationalItemStateChanged
+
+    private void cbLoisirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLoisirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbLoisirActionPerformed
+
+    private void cbunDistanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbunDistanceActionPerformed
+        filtreUnDeuxDistance();
+    }//GEN-LAST:event_cbunDistanceActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setMultiSelectionEnabled(false);
+        fc.setFileFilter(new FileNameExtensionFilter("CSV file", "csv"));
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String path = new String();
+            path = file.getAbsolutePath();
+            fichier = new TListe(path);
+            graphPanel1.ajoutListePts(fichier);
+            jScrollGraphpane.setViewportView(graphPanel1);
+            Integer nombre = fichier.compterVilles() + fichier.compterRestaurants() + fichier.compterLoisir();      
+            jLabel4.setText(nombre.toString());
+            nbRoute.setText(Integer.toString(fichier.compterRoute()));
+            nbNoeud.setText(Integer.toString(fichier.compterLieu()));
+            numberPanel.setEnabled(true);
+            for (Component c : numberPanel.getComponents()) c.setEnabled(true);
+            comparPanel.setEnabled(false);
+            for (Component c : comparPanel.getComponents()) c.setEnabled(false);
+            neighborListPanel.setEnabled(false);
+            for (Component c : neighborListPanel1.getComponents()) c.setEnabled(false);
+            for (Component c : neighborListPanel2.getComponents()) c.setEnabled(false);
+            }
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -652,17 +718,23 @@ public class Mainscreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JCheckBox cbAutoroute;
+    private javax.swing.JCheckBox cbDeuxDistance;
+    private javax.swing.JCheckBox cbDépartemental;
+    private javax.swing.JCheckBox cbLoisir;
+    private javax.swing.JCheckBox cbNational;
+    private javax.swing.JCheckBox cbResto;
+    private javax.swing.JCheckBox cbVille;
+    private javax.swing.JCheckBox cbunDistance;
+    private javax.swing.JPanel comparPanel;
     private javax.swing.JPanel globalOptionPanel;
     private saegraphmap.window.GraphPanel graphPanel1;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox8;
+    private javax.swing.JLabel is2Distancetxt;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem4;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem5;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -670,14 +742,7 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -686,7 +751,7 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -694,22 +759,87 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollGraphpane;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JLabel nbNoeud;
+    private javax.swing.JLabel nbRoute;
     private javax.swing.JPanel neighborListPanel;
+    private javax.swing.JPanel neighborListPanel1;
+    private javax.swing.JPanel neighborListPanel2;
     private javax.swing.JPanel numberPanel;
     private javax.swing.JPanel pointDataPanel;
+    private javax.swing.JCheckBox vCbLoisir;
+    private javax.swing.JCheckBox vCbResto;
+    private javax.swing.JCheckBox vcbville;
     // End of variables declaration//GEN-END:variables
     private FloydWarshallMatrix matrix;
+    TListe fichier = null;
+    TLieu selection1 = new TLieu();
+    TLieu selection2 = new TLieu();
+
+    private void comparaison(){
+        if(jComboBox1.getSelectedItem()=="Ouverture") {
+            jLabel6.setText(fichier.plusOuverte(selection1,selection2));
+        }
+        if(jComboBox1.getSelectedItem()=="Gastronomie") {
+            jLabel6.setText(fichier.plusGastronomique(selection1,selection2));
+        }
+        if(jComboBox1.getSelectedItem()=="Culture") {
+            jLabel6.setText(fichier.plusCulturelle(selection1,selection2));
+        }
+        if(jComboBox1.getSelectedItem()=="(Aucun)") {
+            jLabel6.setText("aucun lieu séléctionné");
+        }
+    }
+
+    private void filtreUnDeuxDistance(){
+        if(cbunDistance.isSelected() || cbDeuxDistance.isSelected()) {
+            ArrayList<TLieu> lieuAffiché = new ArrayList<>();
+            lieuAffiché.add(selection1);
+            if (cbunDistance.isSelected()) {
+                if (vcbville.isSelected()) {
+                    lieuAffiché.addAll(fichier.unDistance(selection1, 'V'));
+                }
+                if (vCbResto.isSelected()) {
+                    lieuAffiché.addAll(fichier.unDistance(selection1, 'R'));
+                }
+                if (vCbLoisir.isSelected()) {
+                    lieuAffiché.addAll(fichier.unDistance(selection1, 'L'));
+                }
+            }
+            if (cbDeuxDistance.isSelected()) {
+                if (vcbville.isSelected()) {
+                    lieuAffiché.addAll(fichier.deuxDistance(selection1, 'V'));
+                }
+                if (vCbResto.isSelected()) {
+                    lieuAffiché.addAll(fichier.deuxDistance(selection1, 'R'));
+                }
+                if (vCbLoisir.isSelected()) {
+                    lieuAffiché.addAll(fichier.deuxDistance(selection1, 'L'));
+                }
+            }
+            for (TLieu lieu = fichier.getListe(); lieu != null; lieu = lieu.getSuivant()) {
+                if (lieuAffiché.contains(lieu)) {
+                    lieu.getrJTogBtn().setVisible(true);
+                } else {
+                    lieu.getrJTogBtn().setVisible(false);
+                }
+            }
+        }
+        else {
+            for (TLieu lieu = fichier.getListe(); lieu != null; lieu = lieu.getSuivant()) {
+                lieu.getrJTogBtn().setVisible(true);
+            }
+        }
+        graphPanel1.repaint();
+    }
 
     class GraphListener implements GraphPanelListener{
 
@@ -721,6 +851,22 @@ public class Mainscreen extends javax.swing.JFrame {
                 jLabel14.setText("non selectionne");
                 jLabel33.setText("");
                 jLabel35.setText("non selectionne");
+                numberPanel.setEnabled(true);
+                for (Component c : numberPanel.getComponents()) c.setEnabled(true);
+                comparPanel.setEnabled(false);
+                for (Component c : comparPanel.getComponents()) c.setEnabled(false);
+                neighborListPanel.setEnabled(false);
+                for (Component c : neighborListPanel1.getComponents()) c.setEnabled(false);
+                for (Component c : neighborListPanel2.getComponents()) c.setEnabled(false);
+                cbAutoroute.setSelected(true);
+                cbDépartemental.setSelected(true);
+                cbNational.setSelected(true);
+                cbLoisir.setSelected(true);
+                cbResto.setSelected(true);
+                cbVille.setSelected(true);
+                fichier.changeLieuVisibility('A',true);
+                graphPanel1.repaint();
+                is2Distancetxt.setText("");
             }
             else if (lieuEvent.get(0) == null && lieuEvent.get(1) != null){
                 selection2 = lieuEvent.get(1);
@@ -729,6 +875,22 @@ public class Mainscreen extends javax.swing.JFrame {
                 jLabel14.setText("non selectionne");
                 jLabel33.setText(Character.toString(selection2.getType()));
                 jLabel35.setText(selection2.getNomLieu());
+                numberPanel.setEnabled(true);
+                for (Component c : numberPanel.getComponents()) c.setEnabled(true);
+                comparPanel.setEnabled(false);
+                for (Component c : comparPanel.getComponents()) c.setEnabled(false);
+                neighborListPanel.setEnabled(false);
+                for (Component c : neighborListPanel1.getComponents()) c.setEnabled(false);
+                for (Component c : neighborListPanel2.getComponents()) c.setEnabled(false);
+                cbAutoroute.setSelected(true);
+                cbDépartemental.setSelected(true);
+                cbNational.setSelected(true);
+                cbLoisir.setSelected(true);
+                cbResto.setSelected(true);
+                cbVille.setSelected(true);
+                fichier.changeLieuVisibility('A',true);
+                graphPanel1.repaint();
+                is2Distancetxt.setText("");
             }
             else if (lieuEvent.get(0) != null && lieuEvent.get(1) == null){
                 selection1 = lieuEvent.get(0);
@@ -737,6 +899,17 @@ public class Mainscreen extends javax.swing.JFrame {
                 jLabel14.setText(selection1.getNomLieu());
                 jLabel33.setText("");
                 jLabel35.setText("non selectionne");
+                numberPanel.setEnabled(false);
+                for (Component c : numberPanel.getComponents()) c.setEnabled(false);
+                comparPanel.setEnabled(false);
+                for (Component c : comparPanel.getComponents()) c.setEnabled(false);
+                neighborListPanel.setEnabled(true);
+                for (Component c : neighborListPanel1.getComponents()) c.setEnabled(true);
+                for (Component c : neighborListPanel2.getComponents()) c.setEnabled(true);
+                if(!neighborListPanel.isEnabled()) fichier.changeLieuVisibility('A',true);
+                graphPanel1.repaint();
+                is2Distancetxt.setText("");
+                filtreUnDeuxDistance();
             }
             else{
                 selection1 = lieuEvent.get(0);
@@ -751,8 +924,21 @@ public class Mainscreen extends javax.swing.JFrame {
                         r.setRoutePluscourChemin(false);
                     }
                 }
-                matrix.findWay(selection1 , selection2);
+                numberPanel.setEnabled(false);
+                for (Component c : numberPanel.getComponents()) c.setEnabled(false);
+                comparPanel.setEnabled(true);
+                for (Component c : comparPanel.getComponents()) c.setEnabled(true);
+                neighborListPanel.setEnabled(true);
+                for (Component c : neighborListPanel1.getComponents()) c.setEnabled(true);
+                for (Component c : neighborListPanel2.getComponents()) c.setEnabled(true);
+                comparaison();
+                fichier.changeLieuVisibility('A',true);
                 graphPanel1.repaint();
+                if (fichier.isDeuxDistance(selection1, selection2)) {
+                    is2Distancetxt.setText("<html>Les 2 lieux sont à 2-distance <br>de l'un de l'autre</html>");
+                } else {
+                    is2Distancetxt.setText("<html>Les 2 lieux ne sont pas à 2-distance <br>de l'un de l'autre</html>");
+                }
             }
         }
     }

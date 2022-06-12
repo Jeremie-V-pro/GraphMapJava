@@ -5,6 +5,8 @@ package saegraphmap.linkedlist;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class TListe {
 
@@ -258,21 +260,13 @@ public class TListe {
         return nb / 2;
     }
 
-    public void unDistance(String Lieu, char typecherche) {
-        TLieu elliste = this.liste;
-        while (elliste != null) {
-            if (elliste.getNomLieu().equals(Lieu)) {
-                TRoute ellisteroute = this.liste.getTetelisteroutes();
-                while (ellisteroute != null) {
-                    if (ellisteroute.getLieuRejoint2().getType() == typecherche) {
-                        System.out.println(ellisteroute.getLieuRejoint2());
-                    }
-                    ellisteroute = ellisteroute.getSuivant();
-                }
-                return;
-            }
-            elliste = elliste.getSuivant();
+    public ArrayList<TLieu> unDistance(TLieu lieu1d, char typecherche) {
+        ArrayList UnDistance = new ArrayList();
+        for (TRoute route = lieu1d.getTetelisteroutes() ; route != null; route = route.getSuivant()){
+            if(route.getLieuRejoint2().getType() == typecherche)
+                UnDistance.add(route.getLieuRejoint2());
         }
+        return UnDistance;
     }
 
 
@@ -281,101 +275,77 @@ public class TListe {
         return listUnDistance.contains(lieu2);
     }
 
-    public ArrayList deuxDistance(String Lieu, char typecherche) {
-        TLieu elliste = this.liste;
+    public ArrayList deuxDistance(TLieu lieu2d, char typecherche) {
         ArrayList deuxDistance = new ArrayList();
-        while (elliste != null) {
-            if (elliste.getNomLieu().equals(Lieu)) {
-                TRoute ellisteroute = this.liste.getTetelisteroutes();
-                while (ellisteroute != null) {
-                    TRoute ellistedeuxdist = ellisteroute.getLieuRejoint2().getTetelisteroutes();
-                    while (ellistedeuxdist != null) {
-                        if (ellistedeuxdist.getLieuRejoint2().getType() == typecherche) {
-                            if (!(deuxDistance.contains(ellistedeuxdist.getLieuRejoint2()))) {
-                                deuxDistance.add(ellistedeuxdist.getLieuRejoint2());
-                                System.out.println(ellistedeuxdist.getLieuRejoint2());
-                            }
-                        }
-                        ellistedeuxdist = ellistedeuxdist.getSuivant();
-                    }
-                    ellisteroute = ellisteroute.getSuivant();
-                }
-                return deuxDistance;
+        for (TRoute route = lieu2d.getTetelisteroutes() ; route != null; route = route.getSuivant()){
+            for (TRoute route2 = route.getLieuRejoint2().getTetelisteroutes() ; route2 != null; route2 = route2.getSuivant()){
+                if(!deuxDistance.contains(route2.getLieuRejoint2()) && route2.getLieuRejoint2()!= lieu2d && route.getLieuRejoint2().getType() == typecherche){
+                    deuxDistance.add(route2.getLieuRejoint2());
             }
-            elliste = elliste.getSuivant();
+            }
         }
-        return null;
+        return deuxDistance;
     }
 
-    public ArrayList deuxDistance(String Lieu) {
-        TLieu elliste = this.liste;
+    public ArrayList deuxDistance(TLieu lieu2d) {
         ArrayList deuxDistance = new ArrayList();
-        while (elliste != null) {
-            if (elliste.getNomLieu().equals(Lieu)) {
-                TRoute ellisteroute = this.liste.getTetelisteroutes();
-                while (ellisteroute != null) {
-                    TRoute ellistedeuxdist = ellisteroute.getLieuRejoint2().getTetelisteroutes();
-                    while (ellistedeuxdist != null) {
-                        if (!(deuxDistance.contains(ellistedeuxdist.getLieuRejoint2()))) {
-                            deuxDistance.add(ellistedeuxdist.getLieuRejoint2());
-                            System.out.println(ellistedeuxdist.getLieuRejoint2());
-                        }
-                        ellistedeuxdist = ellistedeuxdist.getSuivant();
-                    }
-                    ellisteroute = ellisteroute.getSuivant();
+        for (TRoute route = lieu2d.getTetelisteroutes() ; route != null; route = route.getSuivant()){
+            for (TRoute route2 = route.getLieuRejoint2().getTetelisteroutes() ; route2 != null; route2 = route2.getSuivant()){
+                if(!deuxDistance.contains(route2.getLieuRejoint2())){
+                    deuxDistance.add(route2.getLieuRejoint2());
                 }
-                return deuxDistance;
             }
-            elliste = elliste.getSuivant();
         }
-        return null;
+        return deuxDistance;
     }
 
-    public boolean isDeuxDistance(String lieu1, String lieu2) {
-        TLieu tlieu1 = chercheLieu(lieu1);
-        TLieu tlieu2 = chercheLieu(lieu2);
-        TRoute elliste1 = tlieu1.getTetelisteroutes();
-        while (elliste1 != null) {
-            TRoute elliste2 = tlieu2.getTetelisteroutes();
-            while (elliste2 != null) {
-                if (elliste1.getLieuRejoint2().equals(elliste2.getLieuRejoint2())) {
-                    return true;
-                }
-                elliste2 = elliste2.getSuivant();
+    public boolean isDeuxDistance(TLieu lieu1, TLieu lieu2) {
+        for(TRoute route = lieu1.getTetelisteroutes() ; route!=null ; route = route.getSuivant()){
+            for(TRoute route2 = lieu2.getTetelisteroutes() ; route2!=null ; route2 = route2.getSuivant()){
+                if(route.getLieuRejoint2() == route2.getLieuRejoint2()) return true;
             }
-            elliste1 = elliste1.getSuivant();
         }
         return false;
     }
 
-    public String plusCulturelle(String lieu1, String lieu2) {
-        int nblieu1;
-        nblieu1 = deuxDistance(lieu1, 'L').size();
-        int nblieu2;
-        nblieu2 = deuxDistance(lieu2, 'L').size();
-        if (nblieu1 == nblieu2) return(lieu1 + " et " + lieu2 + " sont autant culturelles");
-        else if (nblieu1 > nblieu2) return(lieu1 + " est plus culturelle que " + lieu2);
-        else return(lieu1 + " est moins culturelle que " + lieu2);
+    public String plusCulturelle(TLieu lieu1, TLieu lieu2) {
+        Set<TLieu> lieuSet = new LinkedHashSet<>(deuxDistance(lieu1, 'L'));
+        lieuSet.addAll(unDistance(lieu1, 'L'));
+        int nblieu1 = lieuSet.size();
+
+        lieuSet = new LinkedHashSet<>(deuxDistance(lieu2, 'L'));
+        lieuSet.addAll(unDistance(lieu2, 'L'));
+        int nblieu2 = lieuSet.size();
+
+        if (nblieu1 == nblieu2) return(lieu1.getNomLieu() + " et " + lieu2.getNomLieu() + " sont autant culturelles");
+        else if (nblieu1 > nblieu2) return(lieu1.getNomLieu() + " est plus culturelle que " + lieu2.getNomLieu());
+        else return(lieu1.getNomLieu() + " est moins culturelle que " + lieu2.getNomLieu());
     }
 
-    public String plusOuverte(String lieu1, String lieu2) {
-        int nblieu1;
-        nblieu1 = deuxDistance(lieu1).size();
-        int nblieu2;
-        nblieu2 = deuxDistance(lieu2).size();
-        if (nblieu1 == nblieu2) return(lieu1 + " et " + lieu2 + " sont autant ouvertes");
-        else if (nblieu1 > nblieu2) return(lieu1 + " est plus ouvertes que " + lieu2);
-        else return(lieu1 + " est moins ouvertes que " + lieu2);
+    public String plusOuverte(TLieu lieu1, TLieu lieu2) {
+        Set<TLieu> lieuSet = new LinkedHashSet<>(deuxDistance(lieu1));
+        lieuSet.addAll(lieu1.unDistance());
+        int nblieu1 = lieuSet.size();
+
+        lieuSet = new LinkedHashSet<>(deuxDistance(lieu2));
+        lieuSet.addAll(lieu2.unDistance());
+        int nblieu2 = lieuSet.size();
+        if (nblieu1 == nblieu2) return(lieu1.getNomLieu() + " et " + lieu2.getNomLieu() + " sont autant ouvertes");
+        else if (nblieu1 > nblieu2) return(lieu1.getNomLieu() + " est plus ouvertes que " + lieu2.getNomLieu());
+        else return(lieu1.getNomLieu() + " est moins ouvertes que " + lieu2.getNomLieu());
     }
 
-    public String plusGastronomique(String lieu1, String lieu2) {
-        int nblieu1;
-        nblieu1 = deuxDistance(lieu1, 'R').size();
-        int nblieu2;
-        nblieu2 = deuxDistance(lieu2, 'R').size();
-        if (nblieu1 == nblieu2) return(lieu1 + " et " + lieu2 + " sont autant gastronomiques");
-        else if (nblieu1 > nblieu2) return(lieu1 + " est plus gastronomiques que " + lieu2);
-        else return(lieu1 + " est moins gastronomiques que " + lieu2);
+    public String plusGastronomique(TLieu lieu1, TLieu lieu2) {
+        Set<TLieu> lieuSet = new LinkedHashSet<>(deuxDistance(lieu1, 'R'));
+        lieuSet.addAll(unDistance(lieu1, 'R'));
+        int nblieu1 = lieuSet.size();
+
+        lieuSet = new LinkedHashSet<>(deuxDistance(lieu2, 'R'));
+        lieuSet.addAll(unDistance(lieu2, 'R'));
+        int nblieu2 = lieuSet.size();
+        if (nblieu1 == nblieu2) return(lieu1.getNomLieu() + " et " + lieu2.getNomLieu() + " sont autant gastronomiques");
+        else if (nblieu1 > nblieu2) return(lieu1.getNomLieu() + " est plus gastronomiques que " + lieu2.getNomLieu());
+        else return(lieu1.getNomLieu() + " est moins gastronomiques que " + lieu2.getNomLieu());
     }
 
     public void ajoutLieu(TLieu lieuAjoute) {
@@ -399,4 +369,6 @@ public class TListe {
     public int compterLieu(){
         return compterLoisir() + compterRestaurants() + compterVilles();
     }
+
+    public int compterRoute(){return  compterAutoroute() + compterDepartementales() + compterNationales();}
 }

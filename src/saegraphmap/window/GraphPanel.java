@@ -9,6 +9,7 @@ import saegraphmap.linkedlist.TListe;
 import saegraphmap.linkedlist.TRoute;
 import saegraphmap.window.listener.GraphPanelListener;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -143,6 +144,10 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         return vecLength(lieu2.getX() - lieu1.getX(), lieu2.getY() - lieu1.getY());
     }
 
+    private double dist(MouseEvent m, TLieu lieu2){
+        return vecLength(lieu2.getX() - m.getX(), lieu2.getY() - m.getY());
+    }
+
     private double vecLength(double x , double y){
         double ssum = Math.pow(x,2) + Math.pow(y,2);
         return Math.sqrt(ssum);
@@ -242,6 +247,8 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
 
     @Override
    public void mouseClicked(MouseEvent mouseEvent) {
+        double d1, d2, lineLen;
+        boolean stop = false;
         TLieu lieu = listPts.getListe();
         TLieu lieuChangeEtatBtn = listPts.getListe();
         ArrayList<TLieu> lieuEvent = null;
@@ -280,11 +287,25 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                 }
                 break;
             }
+
             lieu = lieu.getSuivant();
         }
         if(ptsSelected) {
             for (GraphPanelListener listener : listeners) {
                 listener.lieuSelectedChanged(lieuEvent);
+            }
+        }
+        else {
+            for (lieu = listPts.getListe(); lieu != null && !stop; lieu = lieu.getSuivant()) {
+                for (TRoute route = lieu.getTetelisteroutes(); route != null; route = route.getSuivant()) {
+                    d1 = dist(mouseEvent, route.getLieuRejoint1());
+                    d2 = dist(mouseEvent, route.getLieuRejoint2());
+                    lineLen = dist(route.getLieuRejoint1(), route.getLieuRejoint2());
+                    if (d1 + d2 >= lineLen - 0.3 && d1 + d2 <= lineLen + 0.1) {
+                        JOptionPane.showMessageDialog(this, "Lieu rejoint 1 : " + route.getLieuRejoint1().getNomLieu() + "\n" + "Lieu rejoint 2 : " + route.getLieuRejoint2().getNomLieu() + "\n" + "Distance : " + route.getDistance() + " Type de route : " + route.getTypeRoute());
+                        stop = true;
+                    }
+                }
             }
         }
     }
