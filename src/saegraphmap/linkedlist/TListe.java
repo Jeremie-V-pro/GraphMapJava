@@ -3,55 +3,94 @@ package saegraphmap.linkedlist;
 
 
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
+/**
+ * Cette classe permet de créer et intérroger la liste de points
+ * @author Jérémie Vernay Léo Coste
+ * @version 69.420
+ */
 public class TListe {
 
+//ATTRIBUTS
+    /**
+     * Cette variable stocke le premier Tlieu de la liste
+     */
     private TLieu liste;
 
+
+//CONSTRUCTOR
+    /**
+     * Crée la liste chainé {@link TListe} grace à un fichier csv dont le chemin est indiqué au constructeur
+     * @param nom_Fichier
+     */
     public TListe(String nom_Fichier) {
-        ArrayList<String> listPts = new ArrayList<>();
+        //Ouverture du fichier et insertion ligne par ligne dans un array de string
         try {
-            BufferedReader buffer_csv = new BufferedReader(new FileReader(nom_Fichier));
-            while (buffer_csv.ready()) {
-                listPts.add(buffer_csv.readLine());
-            }
-            buffer_csv.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("Erreur fichier non trouver: " + ex);
-        } catch (IOException ex) {
-            System.out.println("Erreur : " + ex);
-        }
 
-        int index = 0;
-        for (String ligne : listPts) {
-            String[] lieu = ligne.split(":", 2);
-            this.ajoutLieu(new TLieu(lieu[0].split(",")[1], lieu[0].split(",")[0].charAt(0), null));
-            listPts.set(index, lieu[1]);
-            index++;
-        }
-
-        TLieu celluleLieu = this.liste;
-        for (String ligne : listPts) {
-            String[] routes = ligne.split(";");
-            System.out.println(ligne);
-            for (String route : routes) {
-                char typeRoute = route.split("::")[0].split(",")[0].toCharArray()[0];
-                float longueurRoute = Integer.parseInt(route.split("::")[0].split(",")[1]);
-                String destination = route.split("::")[1].split(",")[1];
-                celluleLieu.ajoutRoute(new TRoute(longueurRoute, typeRoute, celluleLieu, chercheLieu(destination)));
+            ArrayList<String> listPts = new ArrayList<>();
+            try {
+                BufferedReader buffer_csv = new BufferedReader(new FileReader(nom_Fichier));
+                while (buffer_csv.ready()) {
+                    listPts.add(buffer_csv.readLine());
+                }
+                buffer_csv.close();
+            } catch (FileNotFoundException ex) {
+                System.out.println("Erreur fichier non trouver: " + ex);
+            } catch (IOException ex) {
+                System.out.println("Erreur : " + ex);
             }
-            celluleLieu = celluleLieu.getSuivant();
+
+            //Création de tout les Tlieu dans la Tliste
+            int index = 0;
+            for (String ligne : listPts) {
+                String[] lieu = ligne.split(":", 2);
+                this.ajoutLieu(new TLieu(lieu[0].split(",")[1], lieu[0].split(",")[0].charAt(0), null));
+                listPts.set(index, lieu[1]);
+                index++;
+            }
+
+            //Ajout des route pour chaque Tlieu
+            TLieu celluleLieu = this.liste;
+            for (String ligne : listPts) {
+                String[] routes = ligne.split(";");
+                System.out.println(ligne);
+                for (String route : routes) {
+                    char typeRoute = route.split("::")[0].split(",")[0].toCharArray()[0];
+                    float longueurRoute = Integer.parseInt(route.split("::")[0].split(",")[1]);
+                    String destination = route.split("::")[1].split(",")[1];
+                    celluleLieu.ajoutRoute(new TRoute(longueurRoute, typeRoute, celluleLieu, chercheLieu(destination)));
+                }
+                celluleLieu = celluleLieu.getSuivant();
+            }
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Erreur lors du chargement du fichier", "Érreur",JOptionPane.ERROR_MESSAGE);
         }
     }
+//GETTER & SETTER
 
+    /**
+     * Renvoie le premier élément de la liste
+     * @return
+     */
     public TLieu getListe() {
         return liste;
     }
 
+//METHODE PUBLIC
+
+    /**
+     * Permet de chercher un Tlieu en fonction de sa String nom.
+     * Elle renvoie null si aucun Tlieu n'est trouvé
+     * @param lieu
+     * @return
+     */
     public TLieu chercheLieu(String lieu) {
         TLieu elliste = this.liste;
         int i = 0;
@@ -64,7 +103,14 @@ public class TListe {
         }
         return null;
     }
-    
+
+    /**
+     * Cette fonction permet de renvoyer la liste des route entre 2 lieu
+     * Celle-ci ne renvoi que les route les plus courte car elle n'est utiliser que pour l'algo de plus cour chemin
+     * @param nomlieu1
+     * @param nomlieu2
+     * @return
+     */
     public ArrayList<TRoute> chercheRoutes(String nomlieu1, String nomlieu2) {
         float distance = Float.MAX_VALUE;
         TLieu lieu1 = chercheLieu(nomlieu1);
@@ -95,87 +141,10 @@ public class TListe {
         return routes;
     }
 
-    public ArrayList afficherVilles() {
-        TLieu elliste = this.liste;
-        ArrayList villes = new ArrayList();
-        while (elliste != null) {
-            if (elliste.getType() == 'V') {
-                villes.add(elliste.getNomLieu());
-            }
-            elliste = elliste.getSuivant();
-        }
-        return villes;
-    }
-
-    public ArrayList afficherRestaurants() {
-        TLieu elliste = this.liste;
-        ArrayList resto = new ArrayList();
-        while (elliste != null) {
-            if (elliste.getType() == 'R') {
-                resto.add(elliste.getNomLieu());
-            }
-            elliste = elliste.getSuivant();
-        }
-        return resto;
-    }
-
-    public ArrayList afficherLoisir() {
-        TLieu elliste = this.liste;
-        ArrayList loisirs = new ArrayList();
-        while (elliste != null) {
-            if (elliste.getType() == 'L') {
-                loisirs.add(elliste.getNomLieu());
-            }
-            elliste = elliste.getSuivant();
-        }
-        return loisirs;
-    }
-
-    public void afficherDepartementales() {
-        TLieu elliste = this.liste;
-        System.out.println("liste des departementales :");
-        while (elliste != null) {
-            TRoute ellisteroute = this.liste.getTetelisteroutes();
-            while (ellisteroute != null) {
-                if (ellisteroute.getTypeRoute() == 'D') {
-                    System.out.println("departementale de " + ellisteroute.getLieuRejoint1() + " a " + ellisteroute.getLieuRejoint2());
-                }
-                ellisteroute = ellisteroute.getSuivant();
-            }
-            elliste = elliste.getSuivant();
-        }
-    }
-
-    public void afficherNationales() {
-        TLieu elliste = this.liste;
-        System.out.println("liste des nationales :");
-        while (elliste != null) {
-            TRoute ellisteroute = this.liste.getTetelisteroutes();
-            while (ellisteroute != null) {
-                if (ellisteroute.getTypeRoute() == 'N') {
-                    System.out.println("nationale de " + ellisteroute.getLieuRejoint1() + " a " + ellisteroute.getLieuRejoint2());
-                }
-                ellisteroute = ellisteroute.getSuivant();
-            }
-            elliste = elliste.getSuivant();
-        }
-    }
-
-    public void afficherAutoroute() {
-        TLieu elliste = this.liste;
-        System.out.println("liste des autoroutes :");
-        while (elliste != null) {
-            TRoute ellisteroute = this.liste.getTetelisteroutes();
-            while (ellisteroute != null) {
-                if (ellisteroute.getTypeRoute() == 'A') {
-                    System.out.println("autoroute de " + ellisteroute.getLieuRejoint1() + " a " + ellisteroute.getLieuRejoint2());
-                }
-                ellisteroute = ellisteroute.getSuivant();
-            }
-            elliste = elliste.getSuivant();
-        }
-    }
-
+    /**
+     * Renvoie le nombre de ville de la TListe
+     * @return
+     */
     public int compterVilles() {
         TLieu elliste = this.liste;
         int nb = 0;
@@ -188,6 +157,10 @@ public class TListe {
         return nb;
     }
 
+    /**
+     * Renvoie le nombre de restorant de la TListe
+     * @return
+     */
     public int compterRestaurants() {
         TLieu elliste = this.liste;
         int nb = 0;
@@ -200,6 +173,10 @@ public class TListe {
         return nb;
     }
 
+    /**
+     * Renvoie le nombre de loisir de la TListe
+     * @return
+     */
     public int compterLoisir() {
         TLieu elliste = this.liste;
         int nb = 0;
@@ -212,6 +189,10 @@ public class TListe {
         return nb;
     }
 
+    /**
+     * Renvoie le nombre de départemental de la Tliste
+     * @return
+     */
     public int compterDepartementales() {
         TLieu elliste = this.liste;
         int nb = 0;
@@ -228,6 +209,10 @@ public class TListe {
         return nb / 2;
     }
 
+    /**
+     * Renvoie le nombre de nationale dans la Tliste
+     * @return
+     */
     public int compterNationales() {
         TLieu elliste = this.liste;
         int nb = 0;
@@ -244,6 +229,10 @@ public class TListe {
         return nb / 2;
     }
 
+    /**
+     * Renvoie le nombre d'Autoroute de la Tliste
+     * @return
+     */
     public int compterAutoroute() {
         TLieu elliste = this.liste;
         int nb = 0;
@@ -260,6 +249,13 @@ public class TListe {
         return nb / 2;
     }
 
+    /**
+     * Renvoit la liste des Tlieu étant à 1-distance du Tlieu en parametre
+     * Un filtre est appliqué en fonction du type de ville indiqué en paramettre
+     * @param lieu1d
+     * @param typecherche
+     * @return
+     */
     public ArrayList<TLieu> unDistance(TLieu lieu1d, char typecherche) {
         ArrayList UnDistance = new ArrayList();
         for (TRoute route = lieu1d.getTetelisteroutes() ; route != null; route = route.getSuivant()){
@@ -270,11 +266,13 @@ public class TListe {
     }
 
 
-    public boolean isUnDistance(TLieu lieu1, TLieu lieu2) {
-        ArrayList<TLieu> listUnDistance = lieu1.unDistance();
-        return listUnDistance.contains(lieu2);
-    }
-
+    /**
+     * Renvoit la liste des Tlieu étant à 2-distance du Tlieu en parametre
+     * Un filtre est appliqué en fonction du type de ville indiqué en paramettre
+     * @param lieu2d
+     * @param typecherche
+     * @return
+     */
     public ArrayList deuxDistance(TLieu lieu2d, char typecherche) {
         ArrayList deuxDistance = new ArrayList();
         for (TRoute route = lieu2d.getTetelisteroutes() ; route != null; route = route.getSuivant()){
@@ -287,6 +285,11 @@ public class TListe {
         return deuxDistance;
     }
 
+    /**
+     * Renvoit toute la liste des Tlieu étant à 2-distance du Tlieu en parametre
+     * @param lieu2d
+     * @return
+     */
     public ArrayList deuxDistance(TLieu lieu2d) {
         ArrayList deuxDistance = new ArrayList();
         for (TRoute route = lieu2d.getTetelisteroutes() ; route != null; route = route.getSuivant()){
@@ -299,6 +302,12 @@ public class TListe {
         return deuxDistance;
     }
 
+    /**
+     * Cette fonction permet de savoir si deux Tlieu sont à 2 distance de l'un de l'autre
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     public boolean isDeuxDistance(TLieu lieu1, TLieu lieu2) {
         for(TRoute route = lieu1.getTetelisteroutes() ; route!=null ; route = route.getSuivant()){
             for(TRoute route2 = lieu2.getTetelisteroutes() ; route2!=null ; route2 = route2.getSuivant()){
@@ -308,6 +317,12 @@ public class TListe {
         return false;
     }
 
+    /**
+     * Cette fonction permet de savoir si la quelle des deux ville à le plus de loisir à moin de deux distance
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     public String plusCulturelle(TLieu lieu1, TLieu lieu2) {
         Set<TLieu> lieuSet = new LinkedHashSet<>(deuxDistance(lieu1, 'L'));
         lieuSet.addAll(unDistance(lieu1, 'L'));
@@ -322,6 +337,12 @@ public class TListe {
         else return(lieu1.getNomLieu() + " est moins culturelle que " + lieu2.getNomLieu());
     }
 
+    /**
+     * Cette fonction permet de savoir si la quelle des deux ville à le plus de TLieu à moin de deux distance
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     public String plusOuverte(TLieu lieu1, TLieu lieu2) {
         Set<TLieu> lieuSet = new LinkedHashSet<>(deuxDistance(lieu1));
         lieuSet.addAll(lieu1.unDistance());
@@ -335,6 +356,12 @@ public class TListe {
         else return(lieu1.getNomLieu() + " est moins ouvertes que " + lieu2.getNomLieu());
     }
 
+    /**
+     * Cette fonction permet de savoir si la quelle des deux ville à le plus de resto à moin de deux distance
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     public String plusGastronomique(TLieu lieu1, TLieu lieu2) {
         Set<TLieu> lieuSet = new LinkedHashSet<>(deuxDistance(lieu1, 'R'));
         lieuSet.addAll(unDistance(lieu1, 'R'));
@@ -348,6 +375,10 @@ public class TListe {
         else return(lieu1.getNomLieu() + " est moins gastronomiques que " + lieu2.getNomLieu());
     }
 
+    /**
+     * Cette fonction ajoute un Tlieu à la fin de la Tliste
+     * @param lieuAjoute
+     */
     public void ajoutLieu(TLieu lieuAjoute) {
         TLieu celluleLieu = this.liste;
         if (celluleLieu == null) {
@@ -360,15 +391,28 @@ public class TListe {
         }
     }
 
+    /**
+     * Cette fonction permet de changer la visibilité de tout les Tlieu sur la map en fonction du type de Lieu
+     * @param c
+     * @param visible
+     */
     public void changeLieuVisibility(char c, boolean visible){
         for(TLieu lieu = this.getListe(); lieu != null ; lieu = lieu.getSuivant()){
             if(lieu.getType() == c || c=='A' ) lieu.getrJTogBtn().setVisible(visible);
         }
     }
 
+    /**
+     * Renvoie le nombre de Tlieu dans la liste
+     * @return
+     */
     public int compterLieu(){
         return compterLoisir() + compterRestaurants() + compterVilles();
     }
 
+    /**
+     * Renvoie le nombre de route unique dans tout les Tlieu
+     * @return
+     */
     public int compterRoute(){return  compterAutoroute() + compterDepartementales() + compterNationales();}
 }

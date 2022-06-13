@@ -20,19 +20,24 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
- * @author neo
+ * Cette class permet de générer un panel affichant les pts
+ * l'algo de FruchtermanReingold permetant d'obtenire un affichage coérant des pts
+ * ce panel permet de selectioné des pts et générer des event.
+ * @author Jérémie
  */
 public class GraphPanel extends javax.swing.JPanel implements MouseListener,MouseMotionListener {
-
-
+//CONSTRUCTOR
+    /**
+     * Genere un panel vide
+     */
     public GraphPanel() {
         initComponents();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
     }
     /**
-     * Creates new form graphPanel
+     * genère un panel avec la liste de pts
+     * il utilise la fonction de génération de graph pour obtenir le bon affichage
      */
     public GraphPanel(TListe listPts) {
         this.listPts = listPts;
@@ -58,8 +63,17 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    //https://www1.pub.informatik.uni-wuerzburg.de/demos/forceDirected.html
-     public void generationGraph(){
+
+
+//METHODE PUBLIC
+    /**
+     * Cette fonction utilise l'algo de FruchtermanReingold pour déplacer les pts qui sont initialisé à des position aléatoire
+     * des force d'attraction et de répulsion sont appliqué au points plusieurs foit pour les déplacer
+     * demo:
+     * https://www1.pub.informatik.uni-wuerzburg.de/demos/forceDirected.html
+     */
+    public void generationGraph(){
+        //initialisation de valeur pour les calculs
         double nbIterrationMax=1000 , iterration = 1, maxForce = 1000, force;
         double temp = 1;
         double minX=Integer.MAX_VALUE , minY=Integer.MAX_VALUE, maxX=Integer.MIN_VALUE , maxY = Integer.MIN_VALUE;
@@ -67,14 +81,17 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         TLieu lieu2;
         TRoute route;
         double epsilon = 0.1;
+        //tant que le nombre d'itération max n'as pas été atteint et que la force maximal est suffisante les points sont déplacer
         while (iterration < nbIterrationMax && maxForce > epsilon){
             lieu = listPts.getListe();
             maxForce = 0;
             iterration++;
+            //Pour tout les points
             while (lieu != null){
                 lieu.setFx(0);
                 lieu.setFy(0);
                 lieu2 = listPts.getListe();
+                //Ajoute la somme des forces d'attraction par rapport à tout les autre points
                 while (lieu2 != null){
                     if(lieu2 != lieu){
                         lieu.setFx( lieu.getFx() +  (forceRep(lieu, lieu2) * normX(lieu2, lieu)));
@@ -85,8 +102,10 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                 lieu = lieu.getSuivant();
             }
             lieu = listPts.getListe();
+            //Pour tout les points
             while (lieu != null){
                 route = lieu.getTetelisteroutes();
+                //Ajoute la somme des force de répulsion avec les pts au quel il est relié
                 while (route != null){
                     lieu.setFx( lieu.getFx() +  (forceAttr(route.getLieuRejoint1(), route.getLieuRejoint2()) * normX(route.getLieuRejoint1(), route.getLieuRejoint2())));
                     lieu.setFy( lieu.getFy() +  (forceAttr(route.getLieuRejoint1(), route.getLieuRejoint2()) * normY(route.getLieuRejoint1(), route.getLieuRejoint2())));
@@ -95,8 +114,8 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                 }
                 lieu = lieu.getSuivant();
             }
-
             lieu = listPts.getListe();
+            //Applique la somme des deux force à chaque points
             while (lieu != null){
                 force =  vecLength(lieu.getFx(), lieu.getFy());
 
@@ -115,6 +134,7 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
             this.repaint();
 
         }
+        //Déplace tout les points pour réduire la taille du graph
         lieu =listPts.getListe();
         while(lieu !=null){
             if     (lieu.getX()<minX) minX = lieu.getX();
@@ -132,27 +152,63 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         this.setPreferredSize(new Dimension((int) (maxX-minX+100), (int) (maxY-minY+100)));
     }
 
+    /**
+     * Cette fonction calcul la force de répulsion entre 2 Tlieu
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     private double forceRep(TLieu lieu1, TLieu lieu2){
         return (Math.pow(this.longueurVisee,2) / Math.max(this.dist(lieu1, lieu2),0.01));
     }
 
+    /**
+     * Cette fonction calcul la force d'attraction entre 2 Tlieu
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     private double forceAttr(TLieu lieu1, TLieu lieu2){
         return  Math.pow(this.dist(lieu1, lieu2), 2) /  longueurVisee;
     }
 
+    /**
+     * Cette fonction calcule la distance entre deux Tlieu
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     private double dist(TLieu lieu1, TLieu lieu2){
         return vecLength(lieu2.getX() - lieu1.getX(), lieu2.getY() - lieu1.getY());
     }
 
+    /**
+     * Cette fonction calcule la disancce entre la souris et le Tlieu
+     * @param m
+     * @param lieu2
+     * @return
+     */
     private double dist(MouseEvent m, TLieu lieu2){
         return vecLength(lieu2.getX() - m.getX(), lieu2.getY() - m.getY());
     }
 
+    /**
+     * Calcule la longueur d'un vecteur
+     * @param x
+     * @param y
+     * @return
+     */
     private double vecLength(double x , double y){
         double ssum = Math.pow(x,2) + Math.pow(y,2);
         return Math.sqrt(ssum);
     }
 
+    /**
+     * Pondération des force en X
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     private double normX(TLieu lieu1, TLieu lieu2){
         if(dist(lieu1, lieu2) == 0){
             return 0;
@@ -160,6 +216,12 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         return (lieu2.getX() - lieu1.getX()) / this.dist(lieu1, lieu2);
     }
 
+    /**
+     * Pondération des force en Y
+     * @param lieu1
+     * @param lieu2
+     * @return
+     */
     private double normY(TLieu lieu1, TLieu lieu2){
         if(dist(lieu1, lieu2) == 0){
             return 0;
@@ -167,24 +229,46 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         return (lieu2.getY() - lieu1.getY()) / this.dist(lieu1, lieu2);
     }
 
+    /**
+     * Pondération de la force en fonction du nb d'utiration
+     */
     private double applyTemp(double dir, double force, double temp){
         return ( dir /  force * Math.min(force, temp * this.longueurVisee * 2));
     }
 
+    /**
+     * réduction du multiplicateur de force
+     * @param temp
+     * @return
+     */
     private double cool(double temp){
         double delta = 0.975;
         return delta * temp;
     }
 
+    /**
+     * Affichage des routes et des points sur le graph
+     * la couleur change en fonction du type de route et de points
+     * @param g
+     */
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        //active l'antialiazing
         g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        //efface l'image précédent
         g2d.setColor(Color.white);
         g2d.fillRect(0,0,this.getWidth(),this.getHeight());
+        //Si la liste des pts n'est pas null il vas afficher les route et les pts
         if(listPts!=null){
+            //parcour de la liste de pts
             for(TLieu lieu = listPts.getListe(); lieu != null; lieu =lieu.getSuivant()){
+                //parcour de la liste de route
                 for(TRoute route = lieu.getTetelisteroutes(); route != null; route = route.getSuivant()){
+                    //j'affiche les route en premier pour que les points s'affiche au dessus des route
+
+                    //en fonction du type de route, de si les deux point relier seront afficher et de si la route est un plus cour chemin
+                    //l'affiche de la route seras modifié(visible, couleur)
                     if(route.isRoutePluscourChemin()){
                         g2d.setColor(Color.magenta);
                         g2d.setStroke(new BasicStroke(3));
@@ -205,8 +289,10 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                     }
                 }
             }
-
+            //parcour la liste des lieux
             for(TLieu lieu = listPts.getListe(); lieu != null; lieu = lieu.getSuivant()){
+                //si le pts est dans un état de selection (1,2) alors on déssine d'abord un cercle pour montrer qu'il est selectionné
+                //affiche le pts en fonction de la visibilité et de sont type
                 if(lieu.getrJTogBtn().isVisible()){
                     if(lieu.getrJTogBtn().isSelected() == 1){
                         g2d.setColor(Color.BLACK);
@@ -223,28 +309,45 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         }
     }
 
+    /**
+     * Modifie si les Auto-routes sont affiché ou non
+     * @param afficheAutoroute
+     */
     public void setAfficheAutoroute(boolean afficheAutoroute) {
         this.afficheAutoroute = afficheAutoroute;
     }
 
-    public void setAfficheNationale(boolean fficheNationale) {
-        this.afficheNationale = fficheNationale;
+    /**
+     * Modifie si les nationales sont affiché ou non
+     * @param afficheNationale
+     */
+    public void setAfficheNationale(boolean afficheNationale) {
+        this.afficheNationale = afficheNationale;
     }
 
+    /**
+     * Modifie si les Départemental sont affiché ou non
+     * @param afficheDepartemental
+     */
     public void setAfficheDepartemental(boolean afficheDepartemental) {
         this.afficheDepartemental = afficheDepartemental;
     }
 
-    public void viderListPts(){
-        this.listPts = null;
-        repaint();
-    }
-
+    /**
+     * permet d'ajouter une liste de pts au graph
+     * @param liste
+     */
     public void ajoutListePts(TListe liste){
         this.listPts = liste;
         generationGraph();
     }
 
+    /**
+     * Détecte si la souris clique sur une route ou un points
+     * Génere un event lorsque qu'on clique sur le points
+     * Change l'état de selection des points
+     * @param mouseEvent
+     */
     @Override
    public void mouseClicked(MouseEvent mouseEvent) {
         double d1, d2, lineLen;
@@ -253,9 +356,11 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         TLieu lieuChangeEtatBtn = listPts.getListe();
         ArrayList<TLieu> lieuEvent = null;
         boolean ptsSelected =false;
+        //parcour la liste des points et détecte si il y a une colision
         while (lieu != null){
             if(Math.sqrt(Math.pow(lieu.getrJTogBtn().getX()-mouseEvent.getX(),2) +Math.pow(lieu.getrJTogBtn().getY()-mouseEvent.getY(),2)) < (float) lieu.getrJTogBtn().getTaillePts()/2 && lieu.getrJTogBtn().isVisible()){
                 ptsSelected = true;
+                //change l'état du points si il était selection ou shift selectionné
                 if(mouseEvent.isShiftDown()){
                     if(lieu.getrJTogBtn().isSelected() != 2) lieu.getrJTogBtn().setEtatBtn(2);
                     else lieu.getrJTogBtn().setEtatBtn(0);
@@ -276,6 +381,7 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
                 this.repaint();
                 lieuChangeEtatBtn = listPts.getListe();
                 lieuEvent = new ArrayList<>(Arrays.asList(null,null));
+                //ajoute dans un array de taille des les points selectionné
                 while (lieuChangeEtatBtn != null)
                 {
                     if (lieuChangeEtatBtn.getrJTogBtn().isSelected() == 1){
@@ -290,11 +396,13 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
 
             lieu = lieu.getSuivant();
         }
+        //si un pts à été selectionné au click alors on déclanche l'event qui renvoit la liste des points selectionné
         if(ptsSelected) {
             for (GraphPanelListener listener : listeners) {
                 listener.lieuSelectedChanged(lieuEvent);
             }
         }
+        //sinon on vérifie si on a clicqué sur une route et dans ce cas là on affiche les info de la route
         else {
             for (lieu = listPts.getListe(); lieu != null && !stop; lieu = lieu.getSuivant()) {
                 for (TRoute route = lieu.getTetelisteroutes(); route != null; route = route.getSuivant()) {
@@ -350,16 +458,33 @@ public class GraphPanel extends javax.swing.JPanel implements MouseListener,Mous
         }
     }
 
+    /**
+     * ajoute les listener
+     * @param listener
+     */
     public void addGraphPanelListener(GraphPanelListener listener){
         this.listeners.add(listener);
     }
-    private final double longueurVisee = 50;
-    private TListe listPts;
-    private boolean afficheAutoroute = true;
-    private boolean afficheNationale =true;
 
-    private boolean afficheDepartemental = true;
-    
+    //ATTRIBUTS
+    /**
+     * correspond à la longueur visée entre les points
+     */
+    private final double longueurVisee = 50;
+    /**
+     * liste des pts pour la génération et l'affichage du graph
+     */
+    private TListe listPts;
+
+    /**
+     * correspond à l'affichage des différents type de route
+     */
+    private boolean afficheAutoroute = true, afficheNationale =true, afficheDepartemental = true;
+
+
+    /**
+     * la liste des listener
+     */
     private List<GraphPanelListener> listeners = new ArrayList<>();
 
 }

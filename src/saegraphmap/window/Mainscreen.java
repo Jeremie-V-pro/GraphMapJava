@@ -20,13 +20,15 @@ import saegraphmap.pathfinding.FloydWarshallMatrix;
 import saegraphmap.window.listener.GraphPanelListener;
 
 /**
- *
- * @author p2105876
+ * Cette classe permet de faire une fenettre permettant d'exploiter un graph enregistrer au format csv
+ * @author Jérémie Vernay Léo Coste
+ * @version 69.420
  */
 public class Mainscreen extends javax.swing.JFrame {
 
     /**
-     * Creates new form Mainscreen
+     * Créer la fenetre et initialise les composant
+     * modifie l'icon du logiciel
      */
     public Mainscreen() {
         initComponents();
@@ -256,7 +258,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addComponent(cbDépartemental)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbNational)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addComponent(nbRoute)
                 .addContainerGap())
         );
@@ -291,16 +293,31 @@ public class Mainscreen extends javax.swing.JFrame {
         vcbville.setSelected(true);
         vcbville.setText("Voir que les villes");
         vcbville.setEnabled(false);
+        vcbville.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbunDistanceActionPerformed(evt);
+            }
+        });
         neighborListPanel2.add(vcbville);
 
         vCbResto.setSelected(true);
         vCbResto.setText("Voir que les retaurants");
         vCbResto.setEnabled(false);
+        vCbResto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbunDistanceActionPerformed(evt);
+            }
+        });
         neighborListPanel2.add(vCbResto);
 
         vCbLoisir.setSelected(true);
         vCbLoisir.setText("Voir que les loisirs");
         vCbLoisir.setEnabled(false);
+        vCbLoisir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbunDistanceActionPerformed(evt);
+            }
+        });
         neighborListPanel2.add(vCbLoisir);
 
         neighborListPanel.add(neighborListPanel2, java.awt.BorderLayout.CENTER);
@@ -326,7 +343,7 @@ public class Mainscreen extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jComboBox1, 0, 343, Short.MAX_VALUE)
+            .addComponent(jComboBox1, 0, 355, Short.MAX_VALUE)
             .addComponent(jLabel5)
             .addComponent(jLabel6)
         );
@@ -502,11 +519,11 @@ public class Mainscreen extends javax.swing.JFrame {
             comparPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(comparPanelLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(is2Distancetxt, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addComponent(is2Distancetxt, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63))
+                .addGap(15, 15, 15))
         );
 
         globalOptionPanel.add(comparPanel);
@@ -582,7 +599,7 @@ public class Mainscreen extends javax.swing.JFrame {
 
         jMenu1.setText("Fichier");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Ouvrir un CSV");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -744,6 +761,10 @@ public class Mainscreen extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    /**
+     * Cache ou Affiche les ville et modifie le compteur de nb de node affiche
+     * @param evt
+     */
     private void cbVilleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbVilleItemStateChanged
         if(evt.getStateChange() == ItemEvent.SELECTED){
             fichier.changeLieuVisibility('V',true);
@@ -758,6 +779,10 @@ public class Mainscreen extends javax.swing.JFrame {
         graphPanel1.repaint();
     }//GEN-LAST:event_cbVilleItemStateChanged
 
+    /**
+     * Cache ou Affiche les resto et modifie le compteur de nb de node affiche
+     * @param evt
+     */
     private void cbRestoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRestoItemStateChanged
         if(evt.getStateChange() == ItemEvent.SELECTED){
             fichier.changeLieuVisibility('R',true);
@@ -770,6 +795,10 @@ public class Mainscreen extends javax.swing.JFrame {
         graphPanel1.repaint();
     }//GEN-LAST:event_cbRestoItemStateChanged
 
+    /**
+     * Cache ou Affiche les loirirs et modifie le compteur de nb de node affiche
+     * @param evt
+     */
     private void cbLoisirItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbLoisirItemStateChanged
         if(evt.getStateChange() == ItemEvent.SELECTED){
             fichier.changeLieuVisibility('L',true);
@@ -782,6 +811,11 @@ public class Mainscreen extends javax.swing.JFrame {
         graphPanel1.repaint();
     }//GEN-LAST:event_cbLoisirItemStateChanged
 
+
+    /**
+     * Cache ou Affiche les Départementales et modifie le compteur de nb de route affiche
+     * @param evt
+     */
     private void cbDépartementalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbDépartementalItemStateChanged
         if(evt.getStateChange() == ItemEvent.SELECTED){
             graphPanel1.setAfficheDepartemental(true);;
@@ -794,6 +828,10 @@ public class Mainscreen extends javax.swing.JFrame {
         graphPanel1.repaint();
     }//GEN-LAST:event_cbDépartementalItemStateChanged
 
+    /**
+     * Cache ou Affiche les auto-routes et modifie le compteur de nb de route affiche
+     * @param evt
+     */
     private void cbAutorouteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbAutorouteItemStateChanged
         if(evt.getStateChange() == ItemEvent.SELECTED){
             graphPanel1.setAfficheAutoroute(true);
@@ -806,6 +844,10 @@ public class Mainscreen extends javax.swing.JFrame {
         graphPanel1.repaint();
     }//GEN-LAST:event_cbAutorouteItemStateChanged
 
+    /**
+     * Cache ou Affiche les nationales et modifie le compteur de nb de route affiche
+     * @param evt
+     */
     private void cbNationalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbNationalItemStateChanged
     if(evt.getStateChange() == ItemEvent.SELECTED){
             graphPanel1.setAfficheNationale(true);
@@ -822,17 +864,28 @@ public class Mainscreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbLoisirActionPerformed
 
+    /**
+     * applique le filtre 2-distance
+     * @param evt
+     */
     private void cbunDistanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbunDistanceActionPerformed
         filtreUnDeuxDistance();
     }//GEN-LAST:event_cbunDistanceActionPerformed
 
+
+    /**
+     * Cette fonction permet l'ouverture d'un csv
+     * @param evt
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         final JFileChooser fc = new JFileChooser();
+        //initialisation de la fenêtre de choix des fichier
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fc.setMultiSelectionEnabled(false);
         fc.setFileFilter(new FileNameExtensionFilter("CSV file", "csv"));
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            //initalise l'interface , charge le csv dans la Tliste, génération du graphmap
             File file = fc.getSelectedFile();
             String path = new String();
             path = file.getAbsolutePath();
@@ -854,6 +907,10 @@ public class Mainscreen extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    /**
+     * applique la compasion entre les villes
+     * @param evt
+     */
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         comparaison();
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -984,6 +1041,11 @@ public class Mainscreen extends javax.swing.JFrame {
     TLieu selection1 = new TLieu();
     TLieu selection2 = new TLieu();
 
+
+    /**
+     * en fonction du type de comparons voulu, les 2 tlieu selectionné sont comparé
+     * le résultat est affiché dans un label
+     */
     private void comparaison(){
         if(jComboBox1.getSelectedItem()=="Ouverture") {
             jLabel6.setText(fichier.plusOuverte(selection1,selection2));
@@ -999,10 +1061,14 @@ public class Mainscreen extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Cette fonction permet de filtrer les ville affiché si elle sont à 2 ou 1 distance du tlieu selectionné
+     */
     private void filtreUnDeuxDistance(){
         if(cbunDistance.isSelected() || cbDeuxDistance.isSelected()) {
             ArrayList<TLieu> lieuAffiché = new ArrayList<>();
             lieuAffiché.add(selection1);
+            //ajout des tlieu dans une liste en fonction de si on demande 1 ou 2 distance
             if (cbunDistance.isSelected()) {
                 if (vcbville.isSelected()) {
                     lieuAffiché.addAll(fichier.unDistance(selection1, 'V'));
@@ -1025,6 +1091,7 @@ public class Mainscreen extends javax.swing.JFrame {
                     lieuAffiché.addAll(fichier.deuxDistance(selection1, 'L'));
                 }
             }
+            //affiche les ville si elle sont dans la liste et cache les autres
             for (TLieu lieu = fichier.getListe(); lieu != null; lieu = lieu.getSuivant()) {
                 if (lieuAffiché.contains(lieu)) {
                     lieu.getrJTogBtn().setVisible(true);
@@ -1041,10 +1108,14 @@ public class Mainscreen extends javax.swing.JFrame {
         graphPanel1.repaint();
     }
 
+    /**
+     * Class interne qui implément un ListenerCustom du graph panel
+     */
     class GraphListener implements GraphPanelListener{
 
         @Override
         public void lieuSelectedChanged(ArrayList<TLieu> lieuEvent) {
+            //si aucun pts n'est selectionné au rend accessible que le paneau qui concerne la map en général
             if (lieuEvent.get(0) == null && lieuEvent.get(1) == null){
                 jComboBox1.setEnabled(false);
                 jLabel13.setText("");
@@ -1068,6 +1139,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 graphPanel1.repaint();
                 is2Distancetxt.setText("");
             }
+            //si que le pts 2 est selectionné alros on fait la même chose si aucun n'était selectionné
             else if (lieuEvent.get(0) == null && lieuEvent.get(1) != null){
                 selection2 = lieuEvent.get(1);
                 jComboBox1.setEnabled(false);
@@ -1092,6 +1164,8 @@ public class Mainscreen extends javax.swing.JFrame {
                 graphPanel1.repaint();
                 is2Distancetxt.setText("");
             }
+
+            //si le premier pts est selectionner on autorise les filtre à 1 et 2 distance
             else if (lieuEvent.get(0) != null && lieuEvent.get(1) == null){
                 selection1 = lieuEvent.get(0);
                 jComboBox1.setEnabled(false);
@@ -1111,6 +1185,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 filtreUnDeuxDistance();
                 graphPanel1.repaint();
             }
+            //si il sont tous selectionné alors on autorise les comparaison
             else{
                 selection1 = lieuEvent.get(0);
                 selection2 = lieuEvent.get(1);
