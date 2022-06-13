@@ -907,9 +907,9 @@ public class Mainscreen extends javax.swing.JFrame {
                 for (Component c : neighborListPanel1.getComponents()) c.setEnabled(true);
                 for (Component c : neighborListPanel2.getComponents()) c.setEnabled(true);
                 if(!neighborListPanel.isEnabled()) fichier.changeLieuVisibility('A',true);
-                graphPanel1.repaint();
                 is2Distancetxt.setText("");
                 filtreUnDeuxDistance();
+                graphPanel1.repaint();
             }
             else{
                 selection1 = lieuEvent.get(0);
@@ -933,6 +933,7 @@ public class Mainscreen extends javax.swing.JFrame {
                 for (Component c : neighborListPanel2.getComponents()) c.setEnabled(true);
                 comparaison();
                 fichier.changeLieuVisibility('A',true);
+                filtreUnDeuxDistance();
                 graphPanel1.repaint();
                 if (fichier.isDeuxDistance(selection1, selection2)) {
                     is2Distancetxt.setText("<html>Les 2 lieux sont à 2-distance <br>de l'un de l'autre</html>");
