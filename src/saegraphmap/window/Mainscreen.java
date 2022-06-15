@@ -882,7 +882,7 @@ public class Mainscreen extends javax.swing.JFrame {
         //initialisation de la fenêtre de choix des fichier
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fc.setMultiSelectionEnabled(false);
-        fc.setFileFilter(new FileNameExtensionFilter("CSV file", "csv"));
+        fc.setFileFilter(new FileNameExtensionFilter("CSV file", "csv","txt"));
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             //initalise l'interface , charge le csv dans la Tliste, génération du graphmap

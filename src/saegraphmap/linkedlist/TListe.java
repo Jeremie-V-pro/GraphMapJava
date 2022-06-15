@@ -277,7 +277,7 @@ public class TListe {
         ArrayList deuxDistance = new ArrayList();
         for (TRoute route = lieu2d.getTetelisteroutes() ; route != null; route = route.getSuivant()){
             for (TRoute route2 = route.getLieuRejoint2().getTetelisteroutes() ; route2 != null; route2 = route2.getSuivant()){
-                if(!deuxDistance.contains(route2.getLieuRejoint2()) && route2.getLieuRejoint2()!= lieu2d && route.getLieuRejoint2().getType() == typecherche){
+                if(!deuxDistance.contains(route2.getLieuRejoint2()) && route2.getLieuRejoint2()!= lieu2d && route2.getLieuRejoint2().getType() == typecherche){
                     deuxDistance.add(route2.getLieuRejoint2());
             }
             }
